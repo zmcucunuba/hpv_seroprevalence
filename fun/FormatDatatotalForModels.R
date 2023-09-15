@@ -1,8 +1,7 @@
-format_data_tot <- function (dat0, for_maps = FALSE)
+format_data_tot <- function (dat0)
 {
   
   dati <- dat0
-  # dati <- readRDS('data/data_for_models/total_data_entered.RDS')
   dati$test1[dati$test1=='NA'] <- '.'
   dati$test2[dati$test2=='NA'] <- '.'
   dati$test3[dati$test3=='NA'] <- '.'

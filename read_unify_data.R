@@ -10,17 +10,17 @@ source('fun/FormatDatatotalForModels.R')
 #------------------------------
 #---------PUERTO RICO----------
 #------------------------------
-PRI <- read_excel("data/raw_data/PRI.xlsx")
-unique(PRI$source_id)
-unique(PRI$source_ss)
-PRIf <- read_and_bind_data(PRI)
+dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-09-15.xlsx")
+unique(dati$source_id)
+unique(dati$source_ss)
+datif <- read_and_bind_data(dati)
 
 # Esto debe repetirse para cada país
 
 #-------------------------
 #------CONSOLIDADO--------
 #-------------------------
-tot_data <- rbind(PRIf)  # Aquí se debe incluir todos los países que se vayan extrayendo. Ej: MEXf, COLf, ECUf, etc..
+tot_data <- rbind(datif)  # Aquí se debe incluir todos los países que se vayan extrayendo. Ej: MEXf, COLf, ECUf, etc..
 
 # Esto es sólo una tabla descriptiva que muestra cuántas serosurveys se ha extraído por cada país
 surveys <- tot_data %>% group_by(country_iso3, dataset_id) %>% dplyr::summarise(n_surveys = n())
