@@ -1,4 +1,4 @@
-format_data_tot <- function (dat0)
+format_data_tot <- function (dat)
 {
   
   dati <- dat0
@@ -19,7 +19,7 @@ format_data_tot <- function (dat0)
   
   dat <- dati %>% 
       mutate(counts = pos, 
-             survey = paste0(source_id, '-', source_ss),
+             survey = paste0(survey, '-', source_ss),
              setting = area_type,
              age_mean_f = floor((age_min + age_max)/2),
              tsur = floor((year_init + year_end)/2),
@@ -63,7 +63,7 @@ format_data_tot <- function (dat0)
     select (survey, total, counts, age_mean_f, tsur, country,
             test, antibody, setting, published,
             loc_type, ADM1, ADM2, ADM3, lat_dec, long_dec, 
-            pathogen, gender_sampled,	pop_type, sexual_debut_percent_by15, int_vaccine,
+            pathogen, gender_sample,	pop_sample, sexual_debut_percent, int_vacinne,
             age_min, age_max, source_type, year_init, year_end, citation)
   
   
