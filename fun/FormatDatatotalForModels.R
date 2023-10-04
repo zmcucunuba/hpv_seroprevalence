@@ -112,7 +112,16 @@ read_and_bind_data <- function(dat)
   {
     
     temp_dat <- filter(dat, source_id == j)
-    temp_dat[,3:12] <- temp_dat[1,3:12]
+    temp_dat[,3:15] <- temp_dat[1,3:15]
+  for (k in unique(temp_dat$survey))
+  {
+    
+    # Aquí hay que hacer el mismo proceso pero para cada survey con las columnas
+    # equivalentes a 16 hasta antes de ns por edad (pendiente revisar bien una vez se mofifique el excel)
+    temp_dat[,16:15] <- temp_dat[1,3:15]
+    
+    
+  }
     new_dat1 <- rbind(new_dat1, temp_dat)
     rm(temp_dat)
   }

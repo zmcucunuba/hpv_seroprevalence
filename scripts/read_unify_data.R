@@ -17,6 +17,9 @@ unique(dati$source_ss)
 length(unique(dati$source_ss))
 unique(dati$survey)
 length(unique(dati$survey))
+
+# Ejecutar la función de lectura y organización de datos
+
 datif <- read_and_bind_data(dati)
 
 
@@ -25,12 +28,9 @@ datif <- read_and_bind_data(dati)
 #------CONSOLIDADO--------
 #-------------------------
 
-# Esto es sólo una tabla descriptiva que muestra cuántas serosurveys se ha extraído por cada país
+# Revisar el total de surveys y el número de age classes
 surveys <- datif %>% group_by(country_iso3, survey) %>% dplyr::summarise(n_ages = n())
 
-surveys_total <- surveys %>% group_by(country_iso3) %>% 
-  dplyr::summarise(dataset_id = n())
-
 # Guardar los datos en RDS
-saveRDS(tot_data, "data/data_for_models/total_data_entered.RDS")
+saveRDS(datif, "data/data_for_models/total_data_entered.RDS")
 
