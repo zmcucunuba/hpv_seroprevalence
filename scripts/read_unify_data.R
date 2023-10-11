@@ -5,24 +5,21 @@ rm(list= ls())
 library(tidyverse)
 library(readxl)
 
-source('fun/FormatDatatotalForModels.R')
+source('fun/f_FormatDatatotalForModels.R')
 
 #------------------------------
 #---------Datos seroprevalencia HPV global----------
 #------------------------------
 dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-10-09.xlsx")
-unique(dati$source_id)
-length(unique(dati$source_id))
-unique(dati$source_ss)
-length(unique(dati$source_ss))
-unique(dati$survey)
-length(unique(dati$survey))
+unique(dati$paper_id)
+length(unique(dati$paper_id))
+unique(dati$survey_id)
+length(unique(dati$survey_id))
+unique(dati$survey_cons)
+length(unique(dati$survey_cons))
 
 # Ejecutar la función de lectura y organización de datos
-
 datif <- read_and_bind_data(dati)
-
-
 
 
 #-------------------------
