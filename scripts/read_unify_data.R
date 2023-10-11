@@ -10,7 +10,7 @@ source('fun/FormatDatatotalForModels.R')
 #------------------------------
 #---------Datos seroprevalencia HPV global----------
 #------------------------------
-dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-09-29.xlsx")
+dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-10-09.xlsx")
 unique(dati$source_id)
 length(unique(dati$source_id))
 unique(dati$source_ss)
@@ -21,6 +21,7 @@ length(unique(dati$survey))
 # Ejecutar la función de lectura y organización de datos
 
 datif <- read_and_bind_data(dati)
+
 
 
 

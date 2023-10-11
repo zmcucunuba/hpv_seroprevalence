@@ -2,9 +2,7 @@ format_data_tot <- function (dat)
 {
   
   dati <- dat0
-  dati$test1[dati$test1=='NA'] <- '.'
-  dati$test2[dati$test2=='NA'] <- '.'
-  dati$test3[dati$test3=='NA'] <- '.'
+  dati$test[dati$test=='NA'] <- '.'
   dati <- dati %>%
     mutate(year_init  = as.numeric(year_init),
            year_end   = as.numeric(year_end),
@@ -63,7 +61,7 @@ format_data_tot <- function (dat)
     select (survey, total, counts, age_mean_f, tsur, country,
             test, antibody, setting, published,
             loc_type, ADM1, ADM2, ADM3, lat_dec, long_dec, 
-            pathogen, gender_sample,	pop_sample, sexual_debut_percent, int_vacinne,
+            pathogen, gender_sample,	pop_sample, sexual_debut_percent,sexual_debut_age_under,int_vaccine,
             age_min, age_max, source_type, year_init, year_end, citation)
   
   
