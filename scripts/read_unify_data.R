@@ -7,6 +7,8 @@ library(readxl)
 
 source('fun/f_FormatDatatotalForModels.R')
 
+
+
 #------------------------------
 #---------Datos seroprevalencia HPV global----------
 #------------------------------
@@ -27,7 +29,7 @@ datif <- read_and_bind_data(dati)
 #-------------------------
 
 # Revisar el total de surveys y el número de age classes
-surveys <- datif %>% group_by(country_iso3, survey) %>% dplyr::summarise(n_ages = n())
+surveys <- dati %>% group_by(country_iso3, survey) %>% dplyr::summarise(n_ages = n())
 
 # Guardar los datos en RDS
 saveRDS(datif, "data/data_for_models/total_data_entered.RDS")

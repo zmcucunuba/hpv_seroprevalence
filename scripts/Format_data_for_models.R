@@ -22,8 +22,8 @@ saveRDS(dat, 'data/data_for_models/clean_data_total.RDS')
 ##--Para los modelos filtrar así, de acuerdo a lo que necesita serofoi:
 
 dat <- dat %>%
-  select (survey, country, ADM1, ADM2,  setting, 
-          pop_type, gender_sampled, sexual_debut_percent_by15,
+  select (survey_id, country, ADM1, ADM2,  setting, 
+          pop_type, gender_sampled, sexual_debut_percent,sexual_debut_age_under
           tsur,
           age_min, age_max, age_mean_f,
           total, counts, prev_obs, prev_obs_lower, prev_obs_upper,

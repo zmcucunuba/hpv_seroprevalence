@@ -13,20 +13,20 @@ format_data_tot <- function (dat)
   dati$age_min[is.na(dati$age_min)] <- dati$age_max[is.na(dati$age_min)]
   dati$year_end[is.na(dati$year_end)] <- dati$year_init[is.na(dati$year_end)]
   dati$year_init[is.na(dati$year_end)] <- dati$year_end[is.na(dati$year_init)]
-  dati$survey_cons[dati$survey_cons < 10] <- paste0(0, dati$survey_cons[dati$survey_cons < 10])
+  dati$source_ss[dati$source_ss < 10] <- paste0(0, dati$source_ss[dati$source_ss < 10])
   
   dat <- dati %>% 
-    mutate(counts = pos, 
-           survey = paste0(survey, '-', survey_cons),
-           setting = area_type,
-           age_mean_f = floor((age_min + age_max)/2),
-           tsur = floor((year_init + year_end)/2),
-           country = country_iso3,
-           antibody = 'IgG',
-           test = paste(test1, test2)) %>%
-    mutate(birth = NA) %>%
-    mutate(survey = str_replace(survey, "_search_", "-")) %>%
-    mutate(survey = str_replace(survey, "_search_", "-")) 
+      mutate(counts = pos, 
+             survey = paste0(survey, '-', source_ss),
+             setting = area_type,
+             age_mean_f = floor((age_min + age_max)/2),
+             tsur = floor((year_init + year_end)/2),
+             country = country_iso3,
+             antibody = 'IgG',
+             test = paste(test1, test2)) %>%
+      mutate(birth = NA) %>%
+      mutate(survey = str_replace(survey, "_search_", "-")) %>%
+      mutate(survey = str_replace(survey, "_search_", "-")) 
   
   
   # Esto es en tal caso que se ingresen los datos en español
@@ -85,7 +85,7 @@ format_data_tot <- function (dat)
   
   # remueve los datos con una observación 
   dat_one_age_class <-  filter(dat, n_ages <= 1) 
-  
+
   datf <- filter(dat, sample_size > 29) 
   
   
@@ -94,63 +94,57 @@ format_data_tot <- function (dat)
 }
 
 
-# Funcion leer y pegar datos
+
 read_and_bind_data <- function(dat)
-  
-  dat<-dati
   
 {
   
-  dat <- dat %>% mutate(survey_id_check = paste0(paper_id, '-', survey_cons))
-  check <- dat %>% select(survey_id_check, survey_id)
+  dat <- dat %>% mutate(dataset_id = paste0(source_id, '-', source_ss))
   
   ### --------- Repeat metadata  for same paper source
   
-  binded_data_paper <- data.frame()
-  unique_papers <- unique(dat$paper_id)
+  new_dat1 <- data.frame()
+  (unique_papers <- unique(dat$source_id))
+  
   for (j in unique_papers)
   {
-    temp_dat <- filter(dat, paper_id == j)
     
-    vars_papers <- c ("citation","source_type", "authors", "data_provider","year_pub", "year_rec_pub", "year_report", 
-                      "n_ss_extracted", "lang" )
-    temp_dat[,vars_papers] <- temp_dat[1,vars_papers]
-    binded_data_paper <- rbind(binded_data_paper, temp_dat)
-    rm(temp_dat)
-  }
-  
-  dat <- binded_data_paper
-  
-  binded_surveys <- data.frame()
-  unique_surveys <- unique(dat$survey_id)
-  
-  for (k in unique_surveys)
+    temp_dat <- filter(dat, source_id == j)
+    temp_dat[,3:15] <- temp_dat[1,3:15]
+  for (k in unique(temp_dat$survey))
   {
-    temp_dat <- filter(dat, survey_id == k)
-    vars_surveys <- c(
-      "year_init", "year_end", "loc_details", 
-      "country_iso3", "ADM1", "ADM2",
-      "ADM3", "loc_type", "loc_name_given",
-      "loc_name_found", "lat_dec", "long_dec",
-      "latlong_source", "lat_deg", "lat_min",
-      "lat_sec", "long_deg", "long_min",
-      "long_sec", "loc_notes", "area_type",
-      "gender_sample", "pop_sample", "other_type_sample",
-      "note_pop", "sex_f_percent", "sample",
-      "setting_notes", "test", "antibody",
-      "n_pos_for_pos", "specific_tests_for_pos", "diag_notes",
-      "int_vaccine", "vaccine_details", "pathogen",
-      "int_other", "int_notes", "sexual_debut_percent",
-      "sexual_debut_age_under"
-    )
-    temp_dat[,vars_surveys] <- temp_dat[1,vars_surveys]
-    binded_surveys <- rbind(binded_surveys, temp_dat)
+    
+    # Aquí hay que hacer el mismo proceso pero para cada survey con las columnas
+    # equivalentes a 16 hasta antes de ns por edad (pendiente revisar bien una vez se mofifique el excel)
+    temp_dat[,16:15] <- temp_dat[1,3:15]
+    
+    
+  }
+    new_dat1 <- rbind(new_dat1, temp_dat)
     rm(temp_dat)
   }
   
-  dat <- binded_surveys
+  
+  
+  ### --------- Repeat metadata  for same survey
+  unique_datasets <- unique(dat$dataset_id)
+  new_dat2 <- data.frame()
+  
+  for (i in unique_datasets)
+    
+  {
+    
+    temp_dat2 <- filter(new_dat1, dataset_id == i)
+    temp_dat2[,13:52] <- temp_dat2[1,13:52]
+    new_dat2 <- rbind(new_dat2, temp_dat2)
+    rm(temp_dat2)
+    
+  }
+  
+  
+  
   ### --------- Return completed data
-  return(dat)
+  return(new_dat2)
   
 }
 
