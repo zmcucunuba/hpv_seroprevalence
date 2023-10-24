@@ -2,10 +2,10 @@
 rm(list=ls())
 library(tidyverse)
 
-source('fun/FormatDatatotalForModels.R')
+source('fun/f_FormatDatatotalForModels.R')
 
-dat0 <- readRDS('data/data_for_models/total_data_entered.RDS')
-dat  <- format_data_tot(dat0)
+dati <- readRDS('data/data_for_models/total_data_entered.RDS')
+dat  <- format_data_tot(dati)
 
 # Guarda los datos en RDS
 saveRDS(dat, 'data/data_for_models/clean_data_total.RDS') 
