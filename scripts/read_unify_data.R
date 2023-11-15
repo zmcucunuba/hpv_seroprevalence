@@ -10,7 +10,7 @@ source('fun/f_read_and_bind_data.R')
 #------------------------------
 #---------Datos seroprevalencia HPV global----------
 #------------------------------
-dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-10-09.xlsx")
+dati <- read_excel("data/raw_data/HPV-seroprev-extraction-2023-11-01.xlsx")
 unique(dati$paper_id)
 length(unique(dati$paper_id))
 unique(dati$survey_id)
@@ -22,7 +22,7 @@ length(unique(dati$survey_cons))
 datif <- read_and_bind_data(dati)
 
 # Revisar el total de surveys y el número de age classes
-surveys <- datif %>% group_by(country_iso3, survey_id, pathogen) %>% 
+surveys <- datif %>% group_by(country_iso3, survey_id, pathogen_art,pathogen) %>% 
   dplyr::summarise(n_ages = n()) %>% filter(n_ages > 2)
 
 table(surveys$pathogen)

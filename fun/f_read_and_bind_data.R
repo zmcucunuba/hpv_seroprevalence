@@ -42,7 +42,7 @@ read_and_bind_data <- function(dat){
       "note_pop", "sex_f_percent", "sample",
       "setting_notes", "test", "antibody",
       "n_pos_for_pos", "specific_tests_for_pos", "diag_notes",
-      "int_vaccine", "vaccine_details", "pathogen",
+      "int_vaccine", "vaccine_details", "pathogen_art", "pathogen",
       "int_other", "int_notes", "sexual_debut_percent",
       "sexual_debut_age_under"
     )
