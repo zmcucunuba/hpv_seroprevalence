@@ -22,10 +22,7 @@ format_data_tot <- function (dat0)
   
   
   # Esto es en tal caso que se ingresen los datos en español
-  dat$setting[dat$setting=='rural'] <- 'rural'
-  dat$setting[dat$setting=='urbano'] <- 'urban'
-  dat$setting[dat$setting=='periurbano'] <- 'periurban'
-  dat$setting[dat$setting=='mixto'] <- 'mixed'
+ 
   dat$setting[dat$setting=='NA'] <- 'no data'
   
   
@@ -34,18 +31,13 @@ format_data_tot <- function (dat0)
   dat$age_mean_f [dat$age_mean_f == 0] <- 1
   dat$tsur[is.na(dat$tsur)] <- dat$year_pub[is.na(dat$tsur)]
   
-  problems <- which(dat$pop_type == 'pregnant' & (dat$age_mean_f <12 | dat$age_mean_f > 55)) 
-  
-  if (length(problems>0)) {
-    print('Carolina!, hay un problema con la edad de las maternas')
-  }
   
   dat <- filter(dat, !is.na(counts))
   dat <- filter(dat, !is.na(total))
   
   
   dat$published <- dat$source_type
-  dat$published[dat$published=='Publicado'] <- 'published'
+ 
   
   # unique(dat$published)
   

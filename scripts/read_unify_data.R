@@ -22,7 +22,7 @@ length(unique(dati$survey_cons))
 datif <- read_and_bind_data(dati)
 
 # Revisar el total de surveys y el número de age classes
-surveys <- datif %>% group_by(country_iso3, survey_id, pathogen_art,pathogen) %>% 
+surveys <- datif %>% group_by(country_iso3, survey_id,pathogen) %>% 
   dplyr::summarise(n_ages = n()) %>% filter(n_ages > 2)
 
 table(surveys$pathogen)

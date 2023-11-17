@@ -26,8 +26,8 @@ dat <- dat %>%
           pop_type, gender_sampled, sexual_debut_percent,sexual_debut_age_under
           tsur,
           age_min, age_max, age_mean_f,
-          total, counts, prev_obs, prev_obs_lower, prev_obs_upper,pathogen_art
-          pathogen_art,pathogen test, antibody,  int_vaccine, gender_sampled, pop_type, 
+          total, counts, prev_obs, prev_obs_lower, prev_obs_upper,
+          pathogen_art,pathogen test, antibody, int_vaccine, gender_sampled, pop_type, 
           sexual_debut_percent_by15,
           citation) 
 
