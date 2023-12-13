@@ -44,7 +44,7 @@ read_and_bind_data <- function(dat){
       "n_pos_for_pos", "specific_tests_for_pos", "diag_notes",
       "int_vaccine", "vaccine_details", "pathogen_art", "pathogen",
       "int_other", "int_notes", "sexual_debut_percent",
-      "sexual_debut_age_under"
+      "sexual_debut_age_under","quality"
     )
     temp_dat[,vars_surveys] <- temp_dat[1,vars_surveys]
     binded_surveys <- rbind(binded_surveys, temp_dat)

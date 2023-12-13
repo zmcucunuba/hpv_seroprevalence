@@ -18,6 +18,12 @@ length(unique(dati$survey_id))
 unique(dati$survey_cons)
 length(unique(dati$survey_cons))
 
+# cambiar character a nueric en age_min, age_max##
+
+dati$age_min <- as.numeric(dati$age_min)
+dati$age_max <- as.numeric(dati$age_max)
+dati$prev_obs <- as.numeric(dati$prev_obs)
+
 # Ejecutar la función de lectura y organización de datos
 datif <- read_and_bind_data(dati)
 

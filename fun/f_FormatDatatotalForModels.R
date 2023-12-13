@@ -46,7 +46,7 @@ format_data_tot <- function (dat0)
             test, antibody, setting, published,
             loc_type, ADM1, ADM2, ADM3, lat_dec, long_dec, 
             pathogen, gender_sample,	pop_sample, sexual_debut_percent,sexual_debut_age_under,int_vaccine,
-            age_min, age_max, source_type, year_init, year_end, citation)
+            age_min, age_max, source_type,quality, year_init, year_end, citation)
   
   
   conf <- data.frame(Hmisc::binconf(dat$counts, dat$total,method="exact"))

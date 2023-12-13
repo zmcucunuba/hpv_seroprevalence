@@ -16,7 +16,7 @@ saveRDS(dat, 'data/data_for_models/clean_data_total.RDS')
 # loc_type, ADM1, ADM2, ADM3, lat_dec, long_dec, gen_sample,
 # pathogen,sexual_debut_percent, 
 # age_min, age_max, source_type, year_init, year_end, prev_obs,
-# prev_obs_lower, pre_obs_upper, n_ages, sample_size
+# prev_obs_lower, pre_obs_upper, n_ages, sample_size, quality
 
 
 ##--Para los modelos filtrar así, de acuerdo a lo que necesita serofoi:
@@ -27,7 +27,7 @@ dat0 <- dat %>%
           tsur, age_min, age_max, age_mean_f,
           total, counts, prev_obs, prev_obs_lower, prev_obs_upper,
           pathogen,test, antibody, int_vaccine, gender_sample, 
-          citation) # agregar la variable "calidad_otawa_nc"
+          citation, quality) # agregar la variable "calidad_otawa_nc"
 
 
 
