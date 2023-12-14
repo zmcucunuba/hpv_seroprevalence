@@ -26,8 +26,8 @@ dat0 <- dat %>%
           sexual_debut_percent,sexual_debut_age_under,
           tsur, age_min, age_max, age_mean_f,
           total, counts, prev_obs, prev_obs_lower, prev_obs_upper,
-          pathogen,test, antibody, int_vaccine, gender_sample, 
-          citation, quality) # agregar la variable "calidad_otawa_nc"
+          pathogen,risk_class,test, antibody, int_vaccine, gender_sample, 
+          citation, quality_NC) # agregar la variable "calidad_otawa_nc"
 
 
 

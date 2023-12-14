@@ -21,6 +21,29 @@ ggplot(data = dat_mult_ages) + # data
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
   facet_wrap(~ survey)
 
+# Plot todos los surveys multiages con fill risk_class
+
+ggplot(data = dat_mult_ages) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21) + 
+  facet_wrap(~ survey)
+
+# Plot todos los surveys multiages con fill risk_class, quality 
+
+ggplot(data = dat_mult_ages) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = quality_NC), size = 2, pch = 21) + 
+  facet_wrap(~ survey)
+# Plot todos lso surveys high quality on fill risk_class
+
+dat_quality_study_high <- filter(dat_mult_ages, quality_NC == "high")
+
+ggplot(data = dat_quality_study_high) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21) + 
+  facet_wrap(~ survey)
+
+
 # Plot todos los surveys multiage con fill patogeno para un unico país
 ggplot(data = dat_mult_ages %>% filter (country == "BES", age_mean_f < 65)) + # data
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
