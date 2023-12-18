@@ -66,6 +66,43 @@ ggplot(data = dat_mult_ages %>% filter (country == "USA", age_mean_f < 65)) + # 
   facet_wrap(pathogen ~ survey_adm1 ) +
   coord_cartesian(xlim = c(0, 65))
 
+ggplot(data = dat_mult_ages %>% filter (country == "PRI", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(pathogen ~ survey_adm1 ) +
+  coord_cartesian(xlim = c(0, 65))
+
+ggplot(data = dat_mult_ages %>% filter (country == "NGA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(pathogen ~ survey_adm1 ) +
+  coord_cartesian(xlim = c(0, 65))
+
+ggplot(data = dat_mult_ages %>% filter (country == "CRI", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(pathogen ~ survey_adm1 ) +
+  coord_cartesian(xlim = c(0, 65))
+
+
+ggplot(data = dat_mult_ages %>% filter (country == "BRA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(pathogen ~ survey_adm1 ) +
+  coord_cartesian(xlim = c(0, 65))
+
+
+ggplot(data = dat_mult_ages %>% filter (country == "IRN", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = pathogen), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(pathogen ~ survey_adm1 ) +
+  coord_cartesian(xlim = c(0, 65))
+
 #Plot por patogeno 
 
 ggplot(data = dat_mult_ages %>% filter (pathogen == "HPV 16")) + # data
@@ -93,4 +130,27 @@ ggplot(data = dat_mult_ages %>% filter (pathogen == "HPV 16/18")) + # data
   geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
   facet_wrap(country ~ survey_adm1 ) 
 
+# Plot HPV16 alta calidad#
+
+
+dat_quality_study_high$country_year <- paste(dat_quality_study_high$country, dat_quality_study_high$tsur)
+hpv16_hq <- dat_quality_study_high %>% filter (pathogen == "HPV 16")
+ggplot(data = hpv16_hq) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ")
+
+hpv18_hq <- dat_quality_study_high %>% filter (pathogen == "HPV 18")
+
+ggplot(data = hpv18_hq) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ")
+
+unique(dat_quality_study_high$survey)
+unique(hpv16_hq$survey)
 
