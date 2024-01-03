@@ -34,11 +34,11 @@ ggplot(data = dat_mult_ages) + # data
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = quality_NC), size = 2, pch = 21) + 
   facet_wrap(~ survey)
-# Plot todos lso surveys high quality on fill risk_class
+# Plot todos loS surveys high quality on fill risk_class
 
-dat_quality_study_high <- filter(dat_mult_ages, quality_NC == "high")
+dat_Qhigh <- filter(dat_mult_ages, quality_NC == "high")
 
-ggplot(data = dat_quality_study_high) + # data
+ggplot(data = dat_Qhigh) + # data
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21) + 
   facet_wrap(~ survey)
@@ -133,8 +133,8 @@ ggplot(data = dat_mult_ages %>% filter (pathogen == "HPV 16/18")) + # data
 # Plot HPV16 alta calidad#
 
 
-dat_quality_study_high$country_year <- paste(dat_quality_study_high$country, dat_quality_study_high$tsur)
-hpv16_hq <- dat_quality_study_high %>% filter (pathogen == "HPV 16")
+dat_Qhigh$country_year <- paste(dat_Qhigh$country, dat_Qhigh$tsur)
+hpv16_hq <- dat_Qhigh %>% filter (pathogen == "HPV 16")
 ggplot(data = hpv16_hq) + # data
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
@@ -142,15 +142,139 @@ ggplot(data = hpv16_hq) + # data
   facet_wrap(country_year ~ survey_adm1 ) + 
   labs(title = "HPV 16_HQ")
 
-hpv18_hq <- dat_quality_study_high %>% filter (pathogen == "HPV 18")
+hpv18_hq <- dat_Qhigh %>% filter (pathogen == "HPV 18")
 
-ggplot(data = hpv18_hq) + # data
+hpv_16.18_hq <- dat_Qhigh %>% filter(pathogen == "HPV 16/18")
+
+ggplot(data = hpv18_hq) + # dat
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
   geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
   facet_wrap(country_year ~ survey_adm1 ) + 
   labs(title = "HPV 18_HQ")
 
-unique(dat_quality_study_high$survey)
+unique(dat_Qhigh$survey)
 unique(hpv16_hq$survey)
+
+## plot Alto riesgo BES 
+
+ggplot((data = hpv18_hq)  %>% filter (country == "BES", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ BES")
+
+ggplot((data = hpv16_hq)  %>% filter (country == "BES", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ BES")
+
+## plot Alto riesgo PRI  -  HPV 16/18
+
+ggplot((data = hpv_16.18_hq)  %>% filter (country == "PRI", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16/18_HQ PRI")
+
+
+
+# Plot Alto riesgo NGA
+
+ggplot((data = hpv16_hq)  %>% filter (country == "NGA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ NGA")
+
+# Plot alto riesgo CRI
+
+ggplot((data = hpv18_hq)  %>% filter (country == "CRI", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ CRI")
+
+ggplot((data = hpv16_hq)  %>% filter (country == "CRI", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ CRI")
+
+
+# Plot alto riesgo USA
+
+ggplot((data = hpv18_hq)  %>% filter (country == "USA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ USA")
+
+
+ggplot((data = hpv16_hq)  %>% filter (country == "USA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ USA")
+
+# Plot alto riesgo BRA
+
+ggplot((data = hpv16_hq)  %>% filter (country == "BRA", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ BRA")
+ 
+
+# Plot alto riesgo COL
+
+ggplot((data = hpv18_hq)  %>% filter (country == "COL", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ COL")
+
+
+ggplot((data = hpv16_hq)  %>% filter (country == "COL", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ COL")
+
+ggplot((data = hpv_16.18_hq)  %>% filter (country == "COL", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16/18_HQ COL")
+
+# Plot alto riesgo TWN
+
+ggplot((data = hpv18_hq)  %>% filter (country == "TWN", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 18_HQ TWN")
+
+
+ggplot((data = hpv16_hq)  %>% filter (country == "TWN", age_mean_f < 65)) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
+  facet_wrap(country_year ~ survey_adm1 ) + 
+  labs(title = "HPV 16_HQ TWN")
+
 
