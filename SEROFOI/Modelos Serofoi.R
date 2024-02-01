@@ -185,3 +185,51 @@ openxlsx::write.xlsx(waic1, "WAIC_VPH16.xlsx")
 
 
 
+# FOI para Costa Rica ##
+
+dat_cri <- data.frame (filter( dat, country == "CRI"))
+
+
+
+# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
+
+dat_crip <- dat_cri %>%  mutate ( birth_year = tsur - age_mean_f)
+
+dat_cri_HPV18 <- data.frame (filter (dat_crip, pathogen == "HPV 18"))
+
+
+#FOI constate  HPV 18
+HPV_constant_HPV18 <- run_seromodel(serodata = dat_cri_HPV18,
+                                    foi_model = "constant",
+                                    n_iters = 1000)
+
+HPV_constant_plot_HPV18 <- plot_seromodel(HPV_constant_HPV18, 
+                                          serodata = dat_cri_HPV18, 
+                                          size_text = 12)
+## normal##
+HPV_normal_HPV18 <- run_seromodel(serodata = dat_cri_HPV18,
+                                  foi_model = "tv_normal",
+                                  n_iters = 1500)
+
+HPV_normal_plot_HPV18 <- plot_seromodel(HPV_normal_HPV18, 
+                                        serodata = dat_cri_HPV18, 
+                                        size_text = 10)
+## normal log##
+
+HPV_normal_log_HPV18 <- run_seromodel(serodata = dat_cri_HPV18,
+                                      foi_model = "tv_normal_log",
+                                      n_iters = 1500)
+
+HPV_normal_log_plot_HPV18 <- plot_seromodel(HPV_normal_log_HPV18, 
+                                            serodata = dat_cri_HPV18, 
+                                            size_text = 10)
+
+cowplot::plot_grid(HPV_constant_plot_HPV18, HPV_normal_plot_HPV18 , HPV_normal_log_plot_HPV18,ncol = 3)
+
+
+
+
+
+
+
+
