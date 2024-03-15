@@ -30,10 +30,22 @@ ggplot(data = dat_mult_ages) + # data
 
 # Plot todos los surveys multiages con fill risk_class, quality 
 
+dat_mult_ages$country_year <- paste(dat_mult_ages$country, dat_mult_ages$tsur)
+
 ggplot(data = dat_mult_ages) + # data
   geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = quality_NC), size = 2, pch = 21) + 
-  facet_wrap(~ survey)
+  facet_wrap(~ survey) +
+  
+
+ggplot(data = dat_mult_ages) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper, colour = country_year), width = 0) +
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = quality_NC), size = 2, pch = 21) + 
+  facet_wrap(~ survey) +
+ 
+
+
 # Plot todos loS surveys high quality on fill risk_class
 
 dat_Qhigh <- filter(dat_mult_ages, quality_NC == "high")

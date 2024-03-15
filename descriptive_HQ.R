@@ -132,5 +132,49 @@ ggplot(data = hpvHQ_all) +
        fill = "Country, year", colour = "Country, year")
 
 
+ggplot(data = hpvHQ_all) + 
+  geom_line(aes(x = age_mean_f, y = prev_obs, colour = country_year), size = 1) + # aesthesic 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper, colour = country_year), width = 0) +
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = country_year, size = total),pch = 21, colour = "black") + 
+  # geom_point(aes(x = age_mean_f, y = sexual_young_prop),pch = 22, colour = "black", fill = "red") + 
+  theme_linedraw() + 
+  scale_y_log10() +
+  coord_cartesian(ylim = c(0.001, 1)) +
+  scale_x_continuous(breaks = seq(0, 65, by = 10), limits = c(5, 65)) +
+  scale_fill_manual(values = colour_hpv_all) +
+  scale_colour_manual(values = colour_hpv_all) +
+  facet_wrap(~  pathogen) + 
+  labs( x = "Edad", 
+       y = "Seroprevalencia", size = "Tamaño de muestra", 
+       fill = "Pais,año", colour = "Pais,año")
 
 
+hpvHQ_all$sexual_young_prop  <- as.numeric(hpvHQ_all$sexual_debut_percent) /100
+ggplot(data = hpvHQ_all) + 
+  geom_line(aes(x = age_mean_f, y = prev_obs, colour = country_year), size = 1) + # aesthesic 
+  geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper, colour = country_year), width = 0) +
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = country_year, size = total),pch = 21, colour = "black") + 
+  theme_linedraw() + 
+  scale_y_log10() +
+  coord_cartesian(ylim = c(0.001, 1)) +
+  scale_x_continuous(breaks = seq(0, 65, by = 10), limits = c(5, 65)) +
+  scale_fill_manual(values = colour_hpv_all) +
+  scale_colour_manual(values = colour_hpv_all) +
+  facet_wrap( country_year ~  pathogen) + 
+  labs( x = "Edad", 
+       y = "Seroprevalencia", size = "Tamaño de muestra", 
+       fill = "País,año", colour = "País,año")
+
+
+
+  
+  # hpv por risk class##
+  
+  ggplot(data = dat_mult_ages) + # data
+    geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+    geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21) + 
+    facet_wrap(~ survey)+
+    theme_linedraw() +
+    labs( x = "Edad", 
+        y = "Seroprevalencia", fill = "Riesgo VPH")
+      

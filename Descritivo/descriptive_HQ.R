@@ -19,7 +19,7 @@ ggplot(data = hpv16_hqF) + # data
   geom_point(aes(x = age_mean_f, y = prev_obs, fill = gender_sample), size = 2, pch = 21) + 
   geom_errorbar(aes(x = age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper)) +
   facet_wrap(country_year ~ survey_adm1 ) + 
-  labs(title = "HPV 16_HQ")  +
+  labs(title = " 16_HQ")  +
   coord_cartesian(xlim = c(0, 65), ylim = c(0,1)) 
 
 ##====== HQ + HPV18 + Female
@@ -110,8 +110,8 @@ ggplot(data = hpvHQ_all) +
   scale_fill_manual(values = colour_hpv_all) +
   scale_colour_manual(values = colour_hpv_all) +
   facet_wrap(~  pathogen) + 
-  labs(title = "High Quality IgG-HPV Seroprevalence Studies", x = "Age", 
-       y = "Seoprevalence", size = "Sample size", 
+  labs(title = "Estudios seroprevalencia VPH-IgG de alta calidad", x = "Edad", 
+       y = "Seroprevalencia", size = "Tamaño muestra", 
        fill = "Country, year", colour = "Country, year")
 
 
@@ -127,9 +127,39 @@ ggplot(data = hpvHQ_all) +
   scale_fill_manual(values = colour_hpv_all) +
   scale_colour_manual(values = colour_hpv_all) +
   facet_wrap( country_year ~  pathogen) + 
-  labs(title = "High Quality IgG-HPV Seroprevalence Studies", x = "Age", 
-       y = "Seoprevalence", size = "Sample size", 
+  labs(title = "Estudios seroprevalencia VPH-IgG de alta calidad", x = "Edad", 
+       y = "Seroprevalencia", size = "Sample size", 
        fill = "Country, year", colour = "Country, year")
+
+
+
+# Plot todos los surveys multiages con fill risk_class
+
+## Plot Base
+
+ggplot(data = dat_mult_ages) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21) + 
+  facet_wrap(~ survey)
+
+#Plot modificado respecto a los otros del descriptivo
+
+colour_hpv_risk <- c("#8dd3c7","#b3de69", "#fb8072")
+                   
+
+ggplot(data = dat_mult_ages) + # data
+  geom_line(aes(x = age_mean_f, y = prev_obs)) + # aesthesic 
+  geom_point(aes(x = age_mean_f, y = prev_obs, fill = risk_class), size = 2, pch = 21, colour = "black") + 
+  theme_linedraw() + 
+    scale_x_continuous(breaks = seq(0, 65, by = 10), limits = c(5, 65)) +
+  scale_fill_manual(values = colour_hpv_risk) +
+  scale_colour_manual(values = colour_hpv_risk) +
+  facet_wrap(~ survey) +
+  labs(title = "Seroprevalencia VPH-IgG", x = "Edad", 
+       y = "Seroprevalencia",size = "Sample size", 
+       fill = "Riesgo VPH")
+
+
 
 
 
