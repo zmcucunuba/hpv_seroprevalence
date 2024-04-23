@@ -29,7 +29,7 @@ HPV_constant_HPV18col <- run_seromodel(serodata = dat_col_HPV18,
 
 HPV_constant_plot_HPV18col <- plot_seromodel(HPV_constant_HPV18col, 
                                      serodata = dat_col_HPV18, 
-                                     size_text = 12)
+                                     size_text = 12, max_lambda = 0.06)
 ## normal##
 HPV_normal_HPV18col <- run_seromodel(serodata = dat_col_HPV18,
                              foi_model = "tv_normal",
@@ -37,7 +37,7 @@ HPV_normal_HPV18col <- run_seromodel(serodata = dat_col_HPV18,
 
 HPV_normal_plot_HPV18col <- plot_seromodel(HPV_normal_HPV18col, 
                                    serodata = dat_col_HPV18, 
-                                   size_text = 12)
+                                   size_text = 12,max_lambda = 0.06)
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV18col, HPV_normal_plot_HPV18col ,ncol = 2)
@@ -65,13 +65,10 @@ loo_fit_constant <- loo_fit_constant$estimates[3, , drop=FALSE]
 loo_fit_normal <- loo::loo(fit1$normal, save_psis = FALSE, pars = c(parameter_name = "logLikelihood"))
 loo_fit_normal <- loo_fit_normal$estimates[3, , drop=FALSE]
 
-loo_fit_normal_log <- loo::loo(fit1$normal_log, save_psis = FALSE, pars = c(parameter_name = "logLikelihood"))
-loo_fit_normal_log <- loo_fit_normal_log$estimates[3, , drop=FALSE]
 
 loo <- rbind(loo_fit_constant, 
              loo_fit_normal,
-             loo_fit_normal_log 
-)
+             )
 
 loocolVPH18col <- data.frame(loo)
 
@@ -92,7 +89,7 @@ constant_HPV16col <- run_seromodel(serodata = dat_col_HPV16,
 
 constant_plot_HPV16col <- plot_seromodel(constant_HPV16col, 
                                     serodata = dat_col_HPV16, 
-                                    size_text = 12)
+                                    size_text = 12, max_lambda = 0.006)
 ## normal##
 normal_HPV16col <- run_seromodel(serodata = dat_col_HPV16,
                             foi_model = "tv_normal",
@@ -100,7 +97,7 @@ normal_HPV16col <- run_seromodel(serodata = dat_col_HPV16,
 
 normal_plot_HPV16col<- plot_seromodel(normal_HPV16col, 
                                   serodata = dat_col_HPV16, 
-                                  size_text = 10)
+                                  size_text = 12, max_lambda = 0.006)
 
 
 cowplot::plot_grid(constant_plot_HPV16col, normal_plot_HPV16col, ncol = 2) 
@@ -133,7 +130,7 @@ constant_HPVhrcol <- run_seromodel(serodata = dat_col_HPVhr,
 
 constant_plot_HPVhrcol <- plot_seromodel(constant_HPVhrcol, 
                                       serodata = dat_col_HPVhr, 
-                                      size_text = 12)
+                                      size_text = 12, max_lambda = 0.006 )
 ## normal##
 normal_HPVhrcol <- run_seromodel(serodata = dat_col_HPVhr,
                               foi_model = "tv_normal",
@@ -141,7 +138,7 @@ normal_HPVhrcol <- run_seromodel(serodata = dat_col_HPVhr,
 
 normal_plot_HPVhrcol<- plot_seromodel(normal_HPVhrcol, 
                                    serodata = dat_col_HPVhr, 
-                                   size_text = 12)
+                                   size_text = 12, max_lambda = 0.006)
 
 
 cowplot::plot_grid(constant_plot_HPVhrcol, normal_plot_HPVhrcol ,ncol = 2)
@@ -184,7 +181,7 @@ HPV_constant_HPV18cri <- run_seromodel(serodata = dat_cri_HPV18,
 
 HPV_constant_plot_HPV18cri <- plot_seromodel(HPV_constant_HPV18cri, 
                                           serodata = dat_cri_HPV18, 
-                                          size_text = 12)
+                                          size_text = 12,max_lambda = 0.06)
 ## normal##
 HPV_normal_HPV18cri <- run_seromodel(serodata = dat_cri_HPV18,
                                   foi_model = "tv_normal",
@@ -192,10 +189,11 @@ HPV_normal_HPV18cri <- run_seromodel(serodata = dat_cri_HPV18,
 
 HPV_normal_plot_HPV18cri <- plot_seromodel(HPV_normal_HPV18cri, 
                                         serodata = dat_cri_HPV18, 
-                                        size_text = 10)
+                                        size_text = 12, max_lambda = 0.06)
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV18cri, HPV_normal_plot_HPV18cri, ncol = 2)
+
 
 
 
@@ -228,7 +226,7 @@ HPV_constant_HPV16cri <- run_seromodel(serodata = dat_cri_HPV16,
 
 HPV_constant_plot_HPV16cri <- plot_seromodel(HPV_constant_HPV16cri, 
                                              serodata = dat_cri_HPV16, 
-                                             size_text = 12)
+                                             size_text = 12, max_lambda = 0.06)
 ## normal##
 HPV_normal_HPV16cri <- run_seromodel(serodata = dat_cri_HPV16,
                                      foi_model = "tv_normal",
@@ -236,7 +234,7 @@ HPV_normal_HPV16cri <- run_seromodel(serodata = dat_cri_HPV16,
 
 HPV_normal_plot_HPV16cri <- plot_seromodel(HPV_normal_HPV16cri, 
                                            serodata = dat_cri_HPV16, 
-                                           size_text = 10)
+                                           size_text = 12, max_lambda = 0.06)
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV16cri, HPV_normal_plot_HPV16cri, ncol = 2)
@@ -260,7 +258,7 @@ HPV_constant_HPV16bra <- run_seromodel(serodata = dat_bra_HPV16,
 
 HPV_constant_plot_HPV16bra <- plot_seromodel(HPV_constant_HPV16bra, 
                                              serodata = dat_bra_HPV16, 
-                                             size_text = 12)
+                                             size_text = 12, max_lambda = 0.06 )
 ## normal##
 HPV_normal_HPV16bra <- run_seromodel(serodata = dat_bra_HPV16,
                                      foi_model = "tv_normal",
@@ -268,7 +266,7 @@ HPV_normal_HPV16bra <- run_seromodel(serodata = dat_bra_HPV16,
 
 HPV_normal_plot_HPV16bra <- plot_seromodel(HPV_normal_HPV16bra, 
                                            serodata = dat_bra_HPV16, 
-                                           size_text = 10)
+                                           size_text = 12, max_lambda = 0.06 )
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV16bra, HPV_normal_plot_HPV16bra, ncol = 2)
@@ -290,7 +288,7 @@ HPV_constant_HPV16NGA <- run_seromodel(serodata = dat_NGA_HPV16,
 
 HPV_constant_plot_HPV16NGA <- plot_seromodel(HPV_constant_HPV16NGA, 
                                              serodata = dat_NGA_HPV16, 
-                                             size_text = 12)
+                                             size_text = 12, max_lambda = 0.06)
 ## normal##
 HPV_normal_HPV16NGA <- run_seromodel(serodata = dat_NGA_HPV16,
                                      foi_model = "tv_normal",
@@ -298,7 +296,7 @@ HPV_normal_HPV16NGA <- run_seromodel(serodata = dat_NGA_HPV16,
 
 HPV_normal_plot_HPV16NGA <- plot_seromodel(HPV_normal_HPV16NGA, 
                                            serodata = dat_NGA_HPV16, 
-                                           size_text = 12)
+                                           size_text = 12, max_lambda = 0.06)
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV16NGA, HPV_normal_plot_HPV16NGA, ncol = 2)
@@ -320,7 +318,7 @@ HPV_constant_PRI_HPVHr <- run_seromodel(serodata = dat_PRI_HPVHr,
 
 HPV_constant_plot_PRI_HPVHr <- plot_seromodel(HPV_constant_PRI_HPVHr, 
                                              serodata = dat_PRI_HPVHr, 
-                                             size_text = 12)
+                                             size_text = 12, max_lambda = 0.06)
 ## normal##
 HPV_normal_PRI_HPVHr<- run_seromodel(serodata = dat_PRI_HPVHr,
                                      foi_model = "tv_normal",
@@ -328,7 +326,7 @@ HPV_normal_PRI_HPVHr<- run_seromodel(serodata = dat_PRI_HPVHr,
 
 HPV_normal_plot_PRI_HPVHr <- plot_seromodel(HPV_normal_PRI_HPVHr, 
                                            serodata = dat_PRI_HPVHr, 
-                                           size_text = 12)
+                                           size_text = 12, max_lambda = 0.06)
 
 
 
@@ -353,15 +351,15 @@ HPV_constant_USA_HPV18 <- run_seromodel(serodata = dat_USA_HPV18,
 
 HPV_constant_plot_USA_HPV18 <- plot_seromodel(HPV_constant_USA_HPV18, 
                                               serodata = dat_USA_HPV18, 
-                                              size_text = 12)
+                                              size_text = 12,max_lambda = 0.006 )
 ## normal  HPV 18 ##
 HPV_normal_USA_HPV18<- run_seromodel(serodata = dat_USA_HPV18,
                                      foi_model = "tv_normal",
-                                     n_iters = 1500)
+                                     n_iters = 2000)
 
 HPV_normal_plot_USA_HPV18 <- plot_seromodel(HPV_normal_USA_HPV18, 
                                             serodata = dat_USA_HPV18, 
-                                            size_text = 12)
+                                            size_text = 12, max_lambda = 0.006 )
 
 
 
@@ -384,7 +382,7 @@ HPV_constant_USA_HPV16 <- run_seromodel(serodata = dat_USA_HPV16,
 
 HPV_constant_plot_USA_HPV16 <- plot_seromodel(HPV_constant_USA_HPV16, 
                                               serodata = dat_USA_HPV16, 
-                                              size_text = 12)
+                                              size_text = 12, max_lambda = 0.06 )
 ## normal  HPV 16 ##
 HPV_normal_USA_HPV16<- run_seromodel(serodata = dat_USA_HPV16,
                                      foi_model = "tv_normal",
@@ -392,7 +390,7 @@ HPV_normal_USA_HPV16<- run_seromodel(serodata = dat_USA_HPV16,
 
 HPV_normal_plot_USA_HPV16 <- plot_seromodel(HPV_normal_USA_HPV16, 
                                             serodata = dat_USA_HPV16, 
-                                            size_text = 12)
+                                            size_text = 12, max_lambda = 0.06 )
 
 
 
@@ -415,7 +413,7 @@ HPV_constant_USA92_HPV16 <- run_seromodel(serodata = dat_USA92_HPV16,
 
 HPV_constant_plot_USA92_HPV16 <- plot_seromodel(HPV_constant_USA92_HPV16, 
                                               serodata = dat_USA92_HPV16, 
-                                              size_text = 12)
+                                              size_text = 12,max_lambda = 0.06 )
 ## normal  HPV 16 ##
 HPV_normal_USA92_HPV16<- run_seromodel(serodata = dat_USA92_HPV16,
                                      foi_model = "tv_normal",
@@ -423,7 +421,7 @@ HPV_normal_USA92_HPV16<- run_seromodel(serodata = dat_USA92_HPV16,
 
 HPV_normal_plot_USA92_HPV16 <- plot_seromodel(HPV_normal_USA92_HPV16, 
                                             serodata = dat_USA92_HPV16, 
-                                            size_text = 12)
+                                            size_text = 12, max_lambda = 0.06)
 
 
 
@@ -444,11 +442,11 @@ dat_TWN_HPV18 <- dat_TWN_HPV18 %>%  mutate ( birth_year = tsur - age_mean_f)
 #FOI constate  HPV 18
 HPV_constant_TWN_HPV18 <- run_seromodel(serodata = dat_TWN_HPV18,
                                           foi_model = "constant",
-                                          n_iters = 1500)
+                                          n_iters = 1000)
 
 HPV_constant_plot_TWN_HPV18 <- plot_seromodel(HPV_constant_TWN_HPV18, 
                                                 serodata = dat_TWN_HPV18, 
-                                                size_text = 12)
+                                                size_text = 12, max_lambda = 0.006)
 ## normal  HPV 18 ##
 HPV_normal_TWN_HPV18<- run_seromodel(serodata = dat_TWN_HPV18,
                                        foi_model = "tv_normal",
@@ -456,13 +454,11 @@ HPV_normal_TWN_HPV18<- run_seromodel(serodata = dat_TWN_HPV18,
 
 HPV_normal_plot_TWN_HPV18 <- plot_seromodel(HPV_normal_TWN_HPV18, 
                                               serodata = dat_TWN_HPV18, 
-                                              size_text = 12)
+                                              size_text = 12, max_lambda = 0.006)
 
 
 
 cowplot::plot_grid(HPV_constant_plot_TWN_HPV18, HPV_normal_plot_TWN_HPV18, ncol = 2)
-
-
 
 
 
