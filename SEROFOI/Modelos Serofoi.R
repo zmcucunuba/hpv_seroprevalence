@@ -23,17 +23,18 @@ dat_col_HPV18 <- data.frame (filter (dat_colp, pathogen == "HPV 18"))
 
 
 #FOI constate  HPV 18
-HPV_constant_HPV18col <- run_seromodel(serodata = dat_col_HPV18,
-                               foi_model = "constant",
-                               n_iters = 1000)
+HPV_constant_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
+                               foi_model = "constant")
+                               
 
 HPV_constant_plot_HPV18col <- plot_seromodel(HPV_constant_HPV18col, 
                                      serodata = dat_col_HPV18, 
                                      size_text = 12, max_lambda = 0.06)
 ## normal##
-HPV_normal_HPV18col <- run_seromodel(serodata = dat_col_HPV18,
+HPV_normal_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
                              foi_model = "tv_normal",
-                             n_iters = 1500)
+                             foi_parameters = list(foi_location = 0, foi_scale = 1),
+                             iter = 1500)
 
 HPV_normal_plot_HPV18col <- plot_seromodel(HPV_normal_HPV18col, 
                                    serodata = dat_col_HPV18, 
