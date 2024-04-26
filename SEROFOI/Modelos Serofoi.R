@@ -11,6 +11,9 @@ library(patchwork)
 
 dat <- readRDS('data/data_for_models/clean_data_total_models.RDS') 
 
+
+#### SEROENCUESTAS COLOMBIA #####
+
 dat_col <- data.frame (filter( dat, country == "COL"))
 
 
@@ -20,35 +23,53 @@ dat_colp <- dat_col %>%  mutate ( birth_year = tsur - age_mean_f)
 
 dat_col_HPV18 <- data.frame (filter (dat_colp, pathogen == "HPV 18"))
 
+max_lambda <- 0.02
 
 
-#FOI constate  HPV 18
+#FOI constate  COLOMBIA HPV 18 ##
+
 HPV_constant_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
-                               foi_model = "constant")
+                               foi_model = "constant",
+                               iter = 1000)
                                
 
 HPV_constant_plot_HPV18col <- plot_seromodel(HPV_constant_HPV18col, 
                                      serodata = dat_col_HPV18, 
-                                     size_text = 12, max_lambda = 0.06)
-## normal##
-HPV_normal_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
+                                     size_text = 12, max_lambda = max_lambda)
+
+
+## normal - dependiente del tiempo  COLOMBIA HPV 18 ##
+
+HPV_time_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
                              foi_model = "tv_normal",
                              foi_parameters = list(foi_location = 0, foi_scale = 1),
                              iter = 1500)
 
-HPV_normal_plot_HPV18col <- plot_seromodel(HPV_normal_HPV18col, 
+HPV_time_plot_HPV18col <- plot_seromodel(HPV_time_HPV18col, 
                                    serodata = dat_col_HPV18, 
-                                   size_text = 12,max_lambda = 0.06)
+                                   size_text = 12,max_lambda = max_lambda)
+
+# Dependiente de la edad  COLOMBIA HPV 18 ## 
+
+HPV_age_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
+                                     foi_model = "av_normal",
+                                     foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                     iter = 1500)
+
+HPV_age_plot_HPV18col <- plot_seromodel(HPV_age_HPV18col, 
+                                           serodata = dat_col_HPV18, 
+                                           size_text = 12,max_lambda = max_lambda)
 
 
-cowplot::plot_grid(HPV_constant_plot_HPV18col, HPV_normal_plot_HPV18col ,ncol = 2)
+cowplot::plot_grid(HPV_constant_plot_HPV18col, HPV_time_plot_HPV18col,HPV_age_plot_HPV18col ,ncol = 3)
 
 
-## AJUSTE DE LOS MODELOS ### 
+## AJUSTE DE LOS MODELOS COLOMBIA VPH 18 ### 
 
 
 HPV_constant_HPV18col <- run_seromodel(serodata = dat_col_HPV18, foi_model = "constant", n_iters = 1000)
-HPV_normal_HPV18col <- run_seromodel(serodata = dat_col_HPV18, foi_model = "tv_normal", n_iters = 1500)
+HPV_time_HPV18col <- run_seromodel(serodata = dat_col_HPV18, foi_model = "tv_normal", n_iters = 1500)
+HPV_age_HPV18col <- run_seromodel(serodata = dat_col_HPV18, foi_model = "tv_normal", n_iters = 1500)
 
 
 
@@ -77,31 +98,47 @@ loocolVPH18col <- data.frame(loo)
 openxlsx::write.xlsx(loocolVPH18col, "LOO_HPV18col.xlsx")
 
 
-# HPV 16 COL
+##### HPV 16 COLOMBIA #######
 
 dat_col_HPV16 <- data.frame (filter (dat_colp, pathogen == "HPV 16"))
 
 
-#FOI constate  HPV 16
+#FOI constate  COLOMBIA HPV 16 ##
 
-constant_HPV16col <- run_seromodel(serodata = dat_col_HPV16,
+HPV_constant_HPV16col <- fit_seromodel(serodata = dat_col_HPV16,
                               foi_model = "constant",
-                              n_iters = 1000)
+                              iter = 1000)
 
-constant_plot_HPV16col <- plot_seromodel(constant_HPV16col, 
+HPV_constant_plot_HPV16col <- plot_seromodel(HPV_constant_HPV16col, 
                                     serodata = dat_col_HPV16, 
                                     size_text = 12, max_lambda = 0.006)
-## normal##
-normal_HPV16col <- run_seromodel(serodata = dat_col_HPV16,
-                            foi_model = "tv_normal",
-                            n_iters = 1500)
 
-normal_plot_HPV16col<- plot_seromodel(normal_HPV16col, 
+## Dependiete del tiempo ##
+
+HPV_time_HPV16col <- fit_seromodel(serodata = dat_col_HPV16,
+                            foi_model = "tv_normal",
+                            foi_parameters = list(foi_location = 0, foi_scale = 1),
+                            iter = 1500)
+
+HPV_time_plot_HPV16col<- plot_seromodel(HPV_time_HPV16col, 
                                   serodata = dat_col_HPV16, 
                                   size_text = 12, max_lambda = 0.006)
 
+#### Dependiente de la edad  ####
 
-cowplot::plot_grid(constant_plot_HPV16col, normal_plot_HPV16col, ncol = 2) 
+HPV_age_HPV16col <- fit_seromodel(serodata = dat_col_HPV16,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
+
+HPV_age_plot_HPV16col <- plot_seromodel(HPV_age_HPV16col, 
+                                        serodata = dat_col_HPV18, 
+                                        size_text = 12,max_lambda = max_lambda)
+
+
+
+
+cowplot::plot_grid(HPV_constant_plot_HPV16col , HPV_time_plot_HPV16col, HPV_age_plot_HPV16col, ncol = 3) 
 
 
 ## AJUSTE DE LOS MODELOS VPH16### 
@@ -118,31 +155,48 @@ waic2 <- as.data.frame(waic2)
 
 openxlsx::write.xlsx(waic2, "WAIC_VPH16.xlsx")
 
+### COLOMBIA HPV 16-18 ###
+
 # crear columna birth_year para HPV 16-18 para datos preparados
 
 dat_col_HPVhr <- data.frame (filter (dat_colp, pathogen == "HPV 16/18"))
 
 
-#FOI constate  HPV 16-18
+#FOI constate  COLOMBIA HPV 16-18####
 
-constant_HPVhrcol <- run_seromodel(serodata = dat_col_HPVhr,
+HPV_constant_HPVhrcol <- fit_seromodel(serodata = dat_col_HPVhr,
                                 foi_model = "constant",
-                                n_iters = 1000)
+                                iter = 1000)
 
-constant_plot_HPVhrcol <- plot_seromodel(constant_HPVhrcol, 
+HPV_constant_plot_HPVhrcol <- plot_seromodel(HPV_constant_HPVhrcol, 
                                       serodata = dat_col_HPVhr, 
-                                      size_text = 12, max_lambda = 0.006 )
-## normal##
-normal_HPVhrcol <- run_seromodel(serodata = dat_col_HPVhr,
-                              foi_model = "tv_normal",
-                              n_iters = 1500)
+                                    size_text = 12, max_lambda = max_lambda )
 
-normal_plot_HPVhrcol<- plot_seromodel(normal_HPVhrcol, 
-                                   serodata = dat_col_HPVhr, 
-                                   size_text = 12, max_lambda = 0.006)
+## Dependiente del tiempo ##
+HPV_time_HPVhrcol <- fit_seromodel(serodata = dat_col_HPVhr,
+                                   foi_model = "tv_normal",
+                                   foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                   iter = 1500)
+
+HPV_time_plot_HPVhrcol<- plot_seromodel(HPV_time_HPV16col, 
+                                        serodata = dat_col_HPVhr, 
+                                        size_text = 12, max_lambda = max_lambda)
 
 
-cowplot::plot_grid(constant_plot_HPVhrcol, normal_plot_HPVhrcol ,ncol = 2)
+#### Dependiente de la edad  ####
+
+HPV_age_HPVhrcol <- fit_seromodel(serodata = dat_col_HPVhr,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
+
+HPV_age_plot_HPVhrcol <- plot_seromodel(HPV_age_HPVhrcol, 
+                                        serodata = dat_col_HPV18, 
+                                        size_text = 12,max_lambda = max_lambda)
+
+
+
+cowplot::plot_grid(HPV_constant_plot_HPVhrcol, HPV_time_plot_HPVhrcol,HPV_age_plot_HPVhrcol,ncol = 3)
 
 
 
@@ -175,25 +229,42 @@ dat_crip <- dat_cri %>%  mutate ( birth_year = tsur - age_mean_f)
 dat_cri_HPV18 <- data.frame (filter (dat_crip, pathogen == "HPV 18"))
 
 
-#FOI constate  HPV 18
-HPV_constant_HPV18cri <- run_seromodel(serodata = dat_cri_HPV18,
+#FOI constate  HPV 18 COSTA RICA##
+HPV_constant_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
                                     foi_model = "constant",
-                                    n_iters = 1000)
+                                   iter = 1000)
 
 HPV_constant_plot_HPV18cri <- plot_seromodel(HPV_constant_HPV18cri, 
                                           serodata = dat_cri_HPV18, 
-                                          size_text = 12,max_lambda = 0.06)
-## normal##
-HPV_normal_HPV18cri <- run_seromodel(serodata = dat_cri_HPV18,
+                                          size_text = 12,max_lambda = max_lambda)
+
+## FOI dependiente de tiempo HPV 18 COSTA RICA##
+
+HPV_time_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
                                   foi_model = "tv_normal",
-                                  n_iters = 1500)
+                                  foi_parameters = list(foi_location = 0, foi_scale =1),
+                                  iter = 1500)
 
-HPV_normal_plot_HPV18cri <- plot_seromodel(HPV_normal_HPV18cri, 
+HPV_time_plot_HPV18cri <- plot_seromodel(HPV_time_HPV18cri, 
                                         serodata = dat_cri_HPV18, 
-                                        size_text = 12, max_lambda = 0.06)
+                                        size_text = 12, max_lambda = max_lambda)
 
 
-cowplot::plot_grid(HPV_constant_plot_HPV18cri, HPV_normal_plot_HPV18cri, ncol = 2)
+
+
+## FOI dependiente de edad HPV 18 COSTA RICA##
+
+HPV_age_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
+
+HPV_age_plot_HPV18cri <- plot_seromodel(HPV_age_HPV18cri , 
+                                        serodata = dat_cri_HPV18, 
+                                        size_text = 12,max_lambda = max_lambda)
+
+
+cowplot::plot_grid(HPV_constant_plot_HPV18cri, HPV_time_plot_HPV18cri, HPV_age_plot_HPV18cri, ncol = 3)
 
 
 
@@ -211,7 +282,7 @@ waic3 <- as.data.frame(waic3)
 
 openxlsx::write.xlsx(waic3, "WAIC_VPHhr.xlsx")
 
-## MODELO CRI HPV 16 ##
+## MODELO COSTA RICA HPV 16 ##
 
 dat_cri <- data.frame (filter( dat, country == "CRI"))
 
@@ -220,25 +291,43 @@ dat_cri <- data.frame (filter( dat, country == "CRI"))
 dat_cri_HPV16 <- data.frame (filter (dat_crip, pathogen == "HPV 16"))
 
 
-#FOI constate  HPV 16
-HPV_constant_HPV16cri <- run_seromodel(serodata = dat_cri_HPV16,
+#FOI constate  HPV 16 COSTA RICA ##
+
+HPV_constant_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
                                        foi_model = "constant",
-                                       n_iters = 1000)
+                                       iter = 1000)
 
 HPV_constant_plot_HPV16cri <- plot_seromodel(HPV_constant_HPV16cri, 
                                              serodata = dat_cri_HPV16, 
                                              size_text = 12, max_lambda = 0.06)
-## normal##
-HPV_normal_HPV16cri <- run_seromodel(serodata = dat_cri_HPV16,
-                                     foi_model = "tv_normal",
-                                     n_iters = 1500)
 
-HPV_normal_plot_HPV16cri <- plot_seromodel(HPV_normal_HPV16cri, 
+## FOI DEPENDIENTE DE TIEMPO COSTA RICA VPH 16#
+
+HPV_time_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
+                                   foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                    foi_model = "tv_normal",
+                                     iter = 1500)
+
+HPV_time_plot_HPV16cri <- plot_seromodel(HPV_time_HPV16cri, 
                                            serodata = dat_cri_HPV16, 
                                            size_text = 12, max_lambda = 0.06)
 
+## FOI dependiente de edad HPV 16 COSTA RICA##
 
-cowplot::plot_grid(HPV_constant_plot_HPV16cri, HPV_normal_plot_HPV16cri, ncol = 2)
+HPV_age_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
+
+HPV_age_plot_HPV16cri <- plot_seromodel(HPV_age_HPV16cri , 
+                                        serodata = dat_cri_HPV16, 
+                                        size_text = 12,max_lambda = 0.06)
+
+
+cowplot::plot_grid(HPV_constant_plot_HPV16cri, HPV_time_plot_HPV16cri, HPV_age_plot_HPV16cri, ncol = 3)
+
+
+
 
 
 
@@ -252,57 +341,41 @@ dat_bra_HPV16<- data.frame (filter( dat, survey == "BRA-017-01"))
 dat_bra_HPV16 <- dat_bra_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
-#FOI constate  HPV 16
-HPV_constant_HPV16bra <- run_seromodel(serodata = dat_bra_HPV16,
+#FOI constate   Brasil HPV 16
+HPV_constant_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
                                        foi_model = "constant",
-                                       n_iters = 1000)
+                                       iter = 1000)
 
 HPV_constant_plot_HPV16bra <- plot_seromodel(HPV_constant_HPV16bra, 
                                              serodata = dat_bra_HPV16, 
                                              size_text = 12, max_lambda = 0.06 )
-## normal##
-HPV_normal_HPV16bra <- run_seromodel(serodata = dat_bra_HPV16,
-                                     foi_model = "tv_normal",
-                                     n_iters = 1500)
 
-HPV_normal_plot_HPV16bra <- plot_seromodel(HPV_normal_HPV16bra, 
+## dependiet del tiempo Brasil VPH 16#
+HPV_time_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
+                                     foi_model = "tv_normal",
+                                     foi_parameters = list(foi_location =0, foi_scale=1),
+                                     iter = 1500)
+
+
+HPV_time_plot_HPV16bra <- plot_seromodel(HPV_time_HPV16bra, 
                                            serodata = dat_bra_HPV16, 
                                            size_text = 12, max_lambda = 0.06 )
 
+# FOI dependiente de edad HPV 16 Brasil##
 
-cowplot::plot_grid(HPV_constant_plot_HPV16bra, HPV_normal_plot_HPV16bra, ncol = 2)
+HPV_age_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
 
-
-## MODELO NIGERIA HPV 16 ##
-
-dat_NGA_HPV16<- data.frame (filter( dat, survey == "NGA-002-01"))
-
-# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
-
-dat_NGA_HPV16 <- dat_NGA_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
-
-
-#FOI constate  HPV 16
-HPV_constant_HPV16NGA <- run_seromodel(serodata = dat_NGA_HPV16,
-                                       foi_model = "constant",
-                                       n_iters = 1000)
-
-HPV_constant_plot_HPV16NGA <- plot_seromodel(HPV_constant_HPV16NGA, 
-                                             serodata = dat_NGA_HPV16, 
-                                             size_text = 12, max_lambda = 0.06)
-## normal##
-HPV_normal_HPV16NGA <- run_seromodel(serodata = dat_NGA_HPV16,
-                                     foi_model = "tv_normal",
-                                     n_iters = 1500)
-
-HPV_normal_plot_HPV16NGA <- plot_seromodel(HPV_normal_HPV16NGA, 
-                                           serodata = dat_NGA_HPV16, 
-                                           size_text = 12, max_lambda = 0.06)
+HPV_age_plot_HPV16bra <- plot_seromodel(HPV_age_HPV16bra , 
+                                        serodata = dat_bra_HPV16, 
+                                        size_text = 12,max_lambda = 0.06)
 
 
-cowplot::plot_grid(HPV_constant_plot_HPV16NGA, HPV_normal_plot_HPV16NGA, ncol = 2)
+cowplot::plot_grid(HPV_constant_plot_HPV16bra, HPV_time_plot_HPV16bra,HPV_age_plot_HPV16bra, ncol = 3)
 
-  
+
 ## MODELO PUERTO RICO  HPV 16/18 ##
 
 dat_PRI_HPVHr<- data.frame (filter( dat, survey == "PRI-001-02"))
@@ -312,90 +385,42 @@ dat_PRI_HPVHr<- data.frame (filter( dat, survey == "PRI-001-02"))
 dat_PRI_HPVHr <- dat_PRI_HPVHr %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
-#FOI constate  HPV 16
-HPV_constant_PRI_HPVHr <- run_seromodel(serodata = dat_PRI_HPVHr,
-                                       foi_model = "constant",
-                                       n_iters = 1000)
+#FOI constate  HPV 16 PUERTO RICO 
+
+HPV_constant_PRI_HPVHr <- fit_seromodel(serodata = dat_PRI_HPVHr,
+                                        foi_model = "constant",
+                                        iter = 1000)
 
 HPV_constant_plot_PRI_HPVHr <- plot_seromodel(HPV_constant_PRI_HPVHr, 
-                                             serodata = dat_PRI_HPVHr, 
-                                             size_text = 12, max_lambda = 0.06)
-## normal##
-HPV_normal_PRI_HPVHr<- run_seromodel(serodata = dat_PRI_HPVHr,
+                                              serodata = dat_PRI_HPVHr, 
+                                              size_text = 12, max_lambda = max_lambda)
+
+## FOI DEPENDINTE DEL TIMEPO VPH 16-18 PUERTO RICO##
+HPV_time_PRI_HPVHr<- fit_seromodel(serodata = dat_PRI_HPVHr,
                                      foi_model = "tv_normal",
-                                     n_iters = 1500)
-
-HPV_normal_plot_PRI_HPVHr <- plot_seromodel(HPV_normal_PRI_HPVHr, 
-                                           serodata = dat_PRI_HPVHr, 
-                                           size_text = 12, max_lambda = 0.06)
+                                    foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                    iter = 1500)
 
 
-
-cowplot::plot_grid(HPV_constant_plot_PRI_HPVHr, HPV_normal_plot_PRI_HPVHr, ncol = 2)
+HPV_time_plot_PRI_HPVHr <- plot_seromodel(HPV_time_PRI_HPVHr, 
+                                         serodata = dat_PRI_HPVHr, 
+                                         size_text = 12, max_lambda = max_lambda)
 
 
 
+# FOI dependiente de edad HPV 16-18 PUERTO RICO ##
 
-## MODELO ESTADOS UNIDOS (2003) HPV 18##
+HPV_age_PRI_HPVHr <- fit_seromodel(serodata = dat_PRI_HPVHr,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500)
 
-dat_USA_HPV18<- data.frame (filter( dat, survey == "USA-026-04"))
-
-# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
-
-dat_USA_HPV18 <- dat_USA_HPV18 %>%  mutate ( birth_year = tsur - age_mean_f)
-
-
-#FOI constate  HPV 18
-HPV_constant_USA_HPV18 <- run_seromodel(serodata = dat_USA_HPV18,
-                                        foi_model = "constant",
-                                        n_iters = 1000)
-
-HPV_constant_plot_USA_HPV18 <- plot_seromodel(HPV_constant_USA_HPV18, 
-                                              serodata = dat_USA_HPV18, 
-                                              size_text = 12,max_lambda = 0.006 )
-## normal  HPV 18 ##
-HPV_normal_USA_HPV18<- run_seromodel(serodata = dat_USA_HPV18,
-                                     foi_model = "tv_normal",
-                                     n_iters = 2000)
-
-HPV_normal_plot_USA_HPV18 <- plot_seromodel(HPV_normal_USA_HPV18, 
-                                            serodata = dat_USA_HPV18, 
-                                            size_text = 12, max_lambda = 0.006 )
+HPV_age_plot_PRI_HPVHr <- plot_seromodel(HPV_age_PRI_HPVHr , 
+                                        serodata = dat_PRI_HPVHr, 
+                                        size_text = 12,max_lambda = max_lambda)
 
 
-
-cowplot::plot_grid(HPV_constant_plot_USA_HPV18, HPV_normal_plot_USA_HPV18, ncol = 2)
-
-
-## MODELO ESTADOS UNIDOS (2003) HPV 16##
-
-dat_USA_HPV16<- data.frame (filter( dat, survey == "USA-026-03"))
-
-# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
-
-dat_USA_HPV16 <- dat_USA_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
-
-
-#FOI constate  HPV 16
-HPV_constant_USA_HPV16 <- run_seromodel(serodata = dat_USA_HPV16,
-                                        foi_model = "constant",
-                                        n_iters = 1000)
-
-HPV_constant_plot_USA_HPV16 <- plot_seromodel(HPV_constant_USA_HPV16, 
-                                              serodata = dat_USA_HPV16, 
-                                              size_text = 12, max_lambda = 0.06 )
-## normal  HPV 16 ##
-HPV_normal_USA_HPV16<- run_seromodel(serodata = dat_USA_HPV16,
-                                     foi_model = "tv_normal",
-                                     n_iters = 1500)
-
-HPV_normal_plot_USA_HPV16 <- plot_seromodel(HPV_normal_USA_HPV16, 
-                                            serodata = dat_USA_HPV16, 
-                                            size_text = 12, max_lambda = 0.06 )
-
-
-
-cowplot::plot_grid(HPV_constant_plot_USA_HPV16, HPV_normal_plot_USA_HPV16, ncol = 2)
+cowplot::plot_grid(HPV_constant_plot_PRI_HPVHr, HPV_time_plot_PRI_HPVHr,HPV_age_plot_PRI_HPVHr, ncol = 3)
 
 
 ## MODELO ESTADOS UNIDOS (1992) HPV 16##
@@ -407,28 +432,135 @@ dat_USA92_HPV16<- data.frame (filter( dat, survey == "USA-011-03"))
 dat_USA92_HPV16 <- dat_USA92_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
-#FOI constate  HPV 16
-HPV_constant_USA92_HPV16 <- run_seromodel(serodata = dat_USA92_HPV16,
-                                        foi_model = "constant",
-                                        n_iters = 1500)
+#FOI constate  HPV 16 ESTADOS UNIDOS (1992)
+HPV_constant_USA92_HPV16 <- fit_seromodel(serodata = dat_USA92_HPV16,
+                                          foi_model = "constant",
+                                          iter = 1500)
 
 HPV_constant_plot_USA92_HPV16 <- plot_seromodel(HPV_constant_USA92_HPV16, 
+                                                serodata = dat_USA92_HPV16, 
+                                                size_text = 12,max_lambda = max_lambda )
+
+## FOI DEPENDIeNTE DEL TIEMPO ESTADOS UNIDOS (1992) HPV 16 ##
+HPV_time_USA92_HPV16<- fit_seromodel(serodata = dat_USA92_HPV16,
+                                       foi_model = "tv_normal",
+                                       foi_parameters = list( foi_location= 0, foi_scale = 1),
+                                       iter = 1500)
+
+HPV_time_plot_USA92_HPV16 <- plot_seromodel(HPV_time_USA92_HPV16, 
                                               serodata = dat_USA92_HPV16, 
-                                              size_text = 12,max_lambda = 0.06 )
-## normal  HPV 16 ##
-HPV_normal_USA92_HPV16<- run_seromodel(serodata = dat_USA92_HPV16,
+                                              size_text = 12, max_lambda = max_lambda)
+
+# FOI dependiente de edad HPV 16 ESTADOS UNIDOS (1992)  ##
+
+HPV_age_USA92_HPV16<- fit_seromodel(serodata = dat_USA92_HPV16,
+                                   foi_model = "av_normal",
+                                   foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                   iter = 1500)
+
+HPV_age_plot_USA92_HPV16 <- plot_seromodel(HPV_age_USA92_HPV16, 
+                                         serodata = dat_USA92_HPV16, 
+                                         size_text = 12,max_lambda = max_lambda)
+
+
+
+cowplot::plot_grid(HPV_constant_plot_USA92_HPV16, HPV_time_plot_USA92_HPV16,HPV_age_plot_USA92_HPV16, ncol = 3)
+
+
+## MODELO ESTADOS UNIDOS (2003) HPV 18##
+
+dat_USA_HPV18<- data.frame (filter( dat, survey == "USA-026-04"))
+
+# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
+
+dat_USA_HPV18 <- dat_USA_HPV18 %>%  mutate ( birth_year = tsur - age_mean_f)
+
+
+#FOI constate  HPV 18 ESTADOS UNIDOS (2003) ##
+HPV_constant_USA_HPV18 <- fit_seromodel(serodata = dat_USA_HPV18,
+                                        foi_model = "constant",
+                                        iter = 1000)
+
+HPV_constant_plot_USA_HPV18 <- plot_seromodel(HPV_constant_USA_HPV18, 
+                                              serodata = dat_USA_HPV18, 
+                                              size_text = 12,max_lambda = max_lambda )
+## FOI DEPENDINET DE TIEMPO ESTADOS UNIDOS (2003) ##
+HPV_time_USA_HPV18<- fit_seromodel(serodata = dat_USA_HPV18,
+                                        foi_model = "tv_normal",
+                                        foi_parameters = list( foi_location = 0, 
+                                                               foi_scale = 1),
+                                        iter = 2000 )
+
+HPV_time_plot_USA_HPV18 <- plot_seromodel(HPV_time_USA_HPV18, 
+                                               serodata = dat_USA_HPV18, 
+                                               size_text = 12, max_lambda = max_lambda )
+
+## dependiente de la edad  ESTADOS UNIDOS (2003) vph 18 ##
+
+HPV_age_USA_HPV18<- fit_seromodel(serodata = dat_USA_HPV18,
+                                        foi_model = "av_normal",
+                                        foi_parameters = list( foi_location = 0, 
+                                                               foi_scale = 1),
+                                        iter = 2000 )
+
+HPV_age_plot_USA_HPV18 <- plot_seromodel(HPV_age_USA_HPV18, 
+                                               serodata = dat_USA_HPV18, 
+                                               size_text = 12, max_lambda = max_lambda )
+
+
+
+
+cowplot::plot_grid(HPV_constant_plot_USA_HPV18, HPV_time_plot_USA_HPV18,HPV_age_plot_USA_HPV18, ncol = 3)
+
+
+## MODELO ESTADOS UNIDOS (2003) HPV 16##
+
+dat_USA_HPV16<- data.frame (filter( dat, survey == "USA-026-03"))
+
+# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
+
+dat_USA_HPV16 <- dat_USA_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
+
+
+#FOI constate  HPV 16 Estado Unidos 2003##
+HPV_constant_USA_HPV16 <- fit_seromodel(serodata = dat_USA_HPV16,
+                                        foi_model = "constant",
+                                        iter = 1000)
+
+HPV_constant_plot_USA_HPV16 <- plot_seromodel(HPV_constant_USA_HPV16, 
+                                              serodata = dat_USA_HPV16, 
+                                              size_text = 12, max_lambda = max_lambda )
+
+## FOI DEPENDINTE DE TIEMPO ESTADOS UNIDOS (2003) HPV 16 ##
+
+HPV_time_USA_HPV16<- fit_seromodel(serodata = dat_USA_HPV16,
                                      foi_model = "tv_normal",
-                                     n_iters = 1500)
+                                     foi_parameters = list( foi_location = 0,
+                                                            foi_scale = 1),
+                                     iter = 1500)
 
-HPV_normal_plot_USA92_HPV16 <- plot_seromodel(HPV_normal_USA92_HPV16, 
-                                            serodata = dat_USA92_HPV16, 
-                                            size_text = 12, max_lambda = 0.06)
-
-
-
-cowplot::plot_grid(HPV_constant_plot_USA92_HPV16, HPV_normal_plot_USA92_HPV16, ncol = 2)
+HPV_time_plot_USA_HPV16 <- plot_seromodel(HPV_time_USA_HPV16, 
+                                            serodata = dat_USA_HPV16, 
+                                            size_text = 12, max_lambda = max_lambda )
 
 
+
+## dependiente de la edad  ESTADOS UNIDOS (2003) vph 18 ##
+
+HPV_age_USA_HPV16<- fit_seromodel(serodata = dat_USA_HPV16,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list( foi_location = 0, 
+                                                         foi_scale = 1),
+                                  iter = 2000 )
+
+HPV_age_plot_USA_HPV16 <- plot_seromodel(HPV_age_USA_HPV16, 
+                                         serodata = dat_USA_HPV16, 
+                                         size_text = 12, max_lambda = max_lambda )
+
+
+
+
+cowplot::plot_grid(HPV_constant_plot_USA_HPV16, HPV_time_plot_USA_HPV16,HPV_age_plot_USA_HPV16, ncol = 3)
 
 
 ## MODELO Taiwan  (1992) HPV 18##
@@ -441,38 +573,87 @@ dat_TWN_HPV18 <- dat_TWN_HPV18 %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
 #FOI constate  HPV 18
-HPV_constant_TWN_HPV18 <- run_seromodel(serodata = dat_TWN_HPV18,
-                                          foi_model = "constant",
-                                          n_iters = 1000)
+HPV_constant_TWN_HPV18 <- fit_seromodel(serodata = dat_TWN_HPV18,
+                                        foi_model = "constant",
+                                       iter = 1000)
 
 HPV_constant_plot_TWN_HPV18 <- plot_seromodel(HPV_constant_TWN_HPV18, 
-                                                serodata = dat_TWN_HPV18, 
-                                                size_text = 12, max_lambda = 0.006)
-## normal  HPV 18 ##
-HPV_normal_TWN_HPV18<- run_seromodel(serodata = dat_TWN_HPV18,
-                                       foi_model = "tv_normal",
-                                       n_iters = 1500)
-
-HPV_normal_plot_TWN_HPV18 <- plot_seromodel(HPV_normal_TWN_HPV18, 
                                               serodata = dat_TWN_HPV18, 
-                                              size_text = 12, max_lambda = 0.006)
+                                              size_text = 12, max_lambda = max_lambda)
+## FOI dependiente de tiempo HPV 18 Taiwan##
+
+HPV_time_TWN_HPV18<- fit_seromodel(serodata = dat_TWN_HPV18,
+                                     foi_model = "tv_normal",
+                                    foi_parameters = list(foi_location = 0, foi_scale= 1),
+                                     iter = 1500)
+
+HPV_time_plot_TWN_HPV18 <- plot_seromodel(HPV_time_TWN_HPV18, 
+                                            serodata = dat_TWN_HPV18, 
+                                            size_text = 12, max_lambda = max_lambda)
+
+## dependiente de la edad  TAIWAN vph 18 ##
+
+HPV_age_TWN_HPV18<- fit_seromodel(serodata = dat_TWN_HPV18,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list( foi_location = 0, 
+                                                         foi_scale = 1),
+                                  iter = 1500 )
+
+HPV_age_plot_TWN_HPV18 <- plot_seromodel(HPV_age_TWN_HPV18, 
+                                         serodata = dat_TWN_HPV18, 
+                                         size_text = 12, max_lambda = max_lambda )
 
 
 
-cowplot::plot_grid(HPV_constant_plot_TWN_HPV18, HPV_normal_plot_TWN_HPV18, ncol = 2)
+cowplot::plot_grid(HPV_constant_plot_TWN_HPV18, HPV_time_plot_TWN_HPV18, HPV_age_plot_TWN_HPV18, ncol = 3)
 
 
 
+## MODELO NIGERIA HPV 16 ##
+
+dat_NGA_HPV16<- data.frame (filter( dat, survey == "NGA-002-01"))
+
+# crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI ##
+
+dat_NGA_HPV16 <- dat_NGA_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
+
+
+#FOI constate  HPV 16
+HPV_constant_HPV16NGA <- fit_seromodel(serodata = dat_NGA_HPV16,
+                                       foi_model = "constant",
+                                      iter = 1000)
+
+HPV_constant_plot_HPV16NGA <- plot_seromodel(HPV_constant_HPV16NGA, 
+                                             serodata = dat_NGA_HPV16, 
+                                             size_text = 12, max_lambda = max_lambda)
+## Modelos dependiente del tiempo##
+HPV_time_HPV16NGA <- fit_seromodel(serodata = dat_NGA_HPV16,
+                                     foi_model = "tv_normal",
+                                   foi_parameters = list( foi_location = 0, 
+                                                          foi_scale = 1),
+                                     iter = 1500)
+
+HPV_time_plot_HPV16NGA <- plot_seromodel(HPV_time_HPV16NGA, 
+                                           serodata = dat_NGA_HPV16, 
+                                           size_text = 12, max_lambda = max_lambda)
+
+
+# dependiente de la edad  TAIWAN vph 18 ##
+
+HPV_age_HPV16NGA <- fit_seromodel(serodata = dat_NGA_HPV16,
+                                  foi_model = "av_normal",
+                                  foi_parameters = list( foi_location = 0, 
+                                                         foi_scale = 1),
+                                  iter = 1500 )
+
+HPV_age_plot_HPV16NGA <- plot_seromodel(HPV_age_HPV16NGA, 
+                                         serodata = dat_NGA_HPV16, 
+                                         size_text = 12, max_lambda = max_lambda )
 
 
 
-
-
-
-
-
+cowplot::plot_grid(HPV_constant_plot_HPV16NGA, HPV_time_plot_HPV16NGA,HPV_age_plot_HPV16NGA, ncol = 3)
 
   
-
 
 
