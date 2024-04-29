@@ -42,8 +42,9 @@ HPV_constant_plot_HPV18col <- plot_seromodel(HPV_constant_HPV18col,
 
 HPV_time_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
                              foi_model = "tv_normal",
-                             foi_parameters = list(foi_location = 0, foi_scale = 1),
-                             iter = 1500)
+                             # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                             iter = 1500,
+                             chunk_size = 5)
 
 HPV_time_plot_HPV18col <- plot_seromodel(HPV_time_HPV18col, 
                                    serodata = dat_col_HPV18, 
@@ -53,8 +54,9 @@ HPV_time_plot_HPV18col <- plot_seromodel(HPV_time_HPV18col,
 
 HPV_age_HPV18col <- fit_seromodel(serodata = dat_col_HPV18,
                                      foi_model = "av_normal",
-                                     foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                     iter = 1500)
+                                     # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                     iter = 1500,
+                                  chunk_size = 5)
 
 HPV_age_plot_HPV18col <- plot_seromodel(HPV_age_HPV18col, 
                                            serodata = dat_col_HPV18, 
@@ -353,8 +355,9 @@ HPV_constant_plot_HPV16bra <- plot_seromodel(HPV_constant_HPV16bra,
 ## dependiet del tiempo Brasil VPH 16#
 HPV_time_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
                                      foi_model = "tv_normal",
-                                     foi_parameters = list(foi_location =0, foi_scale=1),
-                                     iter = 1500)
+                                     # foi_parameters = list(foi_location =0, foi_scale=1),
+                                     iter = 1500,
+                                   chunk_size = 5)
 
 
 HPV_time_plot_HPV16bra <- plot_seromodel(HPV_time_HPV16bra, 
@@ -365,8 +368,9 @@ HPV_time_plot_HPV16bra <- plot_seromodel(HPV_time_HPV16bra,
 
 HPV_age_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
                                   foi_model = "av_normal",
-                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                  iter = 1500)
+                                  # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 1500,
+                                  chunk_size = 5)
 
 HPV_age_plot_HPV16bra <- plot_seromodel(HPV_age_HPV16bra , 
                                         serodata = dat_bra_HPV16, 
