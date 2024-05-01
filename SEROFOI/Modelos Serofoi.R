@@ -285,7 +285,7 @@ HPV_constant_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
 
 HPV_constant_plot_HPV18cri <- plot_seromodel(HPV_constant_HPV18cri, 
                                           serodata = dat_cri_HPV18, 
-                                          size_text = 12,max_lambda = 0.006,
+                                          size_text = 12,max_lambda = 0.07,
                                           ylim_prev = c(0.0, 0.5))
 
 ## FOI dependiente de tiempo HPV 18 COSTA RICA##
@@ -298,7 +298,7 @@ HPV_time_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
 
 HPV_time_plot_HPV18cri <- plot_seromodel(HPV_time_HPV18cri, 
                                         serodata = dat_cri_HPV18, 
-                                        size_text = 12, max_lambda = 0.006,
+                                        size_text = 12, max_lambda = 0.07,
                                         ylim_prev = c(0.0, 0.5))
 
 
@@ -308,21 +308,28 @@ HPV_time_plot_HPV18cri <- plot_seromodel(HPV_time_HPV18cri,
 
 HPV_age_HPV18cri <- fit_seromodel(serodata = dat_cri_HPV18,
                                   foi_model = "av_normal",
-                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                  iter = 1500)
+                                  # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 2500,
+                                  chunk_size = 5)
 
 HPV_age_plot_HPV18cri <- plot_seromodel(HPV_age_HPV18cri , 
                                         serodata = dat_cri_HPV18, 
-                                        size_text = 12,max_lambda = 0.006,
+                                        size_text = 12,max_lambda = 0.07,
                                         ylim_prev = c(0.0, 0.5))
-
 
 cowplot::plot_grid(HPV_constant_plot_HPV18cri, HPV_time_plot_HPV18cri, HPV_age_plot_HPV18cri, ncol = 3)
 
 
+cri_hpv18<- cowplot::plot_grid(HPV_constant_plot_HPV18cri, HPV_time_plot_HPV18cri, HPV_age_plot_HPV18cri, ncol = 3)
+jpeg(filename = "SEROFOI/plots/cri_hpv18.jpeg", width = 480*2, height = 480*2) 
+cri_hpv18 
+dev.off()
+
+rm(list = ls(pattern = "_HPV18cri"))
 
 
-## AJUSTE DE LOS MODELOS  CRI VPH18 ### 
+
+## AJUSTE DE LOS MODELOS  COSTA RICA CRI VPH18 ### 
 
 constant_HPV16 <- run_seromodel(serodata = dat_col_HPVhr, foi_model = "constant", n_iters = 1000)
 normal_HPV16 <- run_seromodel(serodata = dat_col_HPVhr, foi_model = "tv_normal", n_iters = 1500)
@@ -335,7 +342,7 @@ waic3 <- as.data.frame(waic3)
 
 openxlsx::write.xlsx(waic3, "WAIC_VPHhr.xlsx")
 
-## MODELO COSTA RICA HPV 16 ##
+##### MODELO COSTA RICA HPV 16 ####
 
 dat_cri <- data.frame (filter( dat, country == "CRI"))
 
@@ -352,35 +359,44 @@ HPV_constant_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
 
 HPV_constant_plot_HPV16cri <- plot_seromodel(HPV_constant_HPV16cri, 
                                              serodata = dat_cri_HPV16, 
-                                             size_text = 12, max_lambda = 0.06)
+                                             size_text = 12, max_lambda = 0.07,
+                                             ylim_prev = c(0.0, 0.5))
 
 ## FOI DEPENDIENTE DE TIEMPO COSTA RICA VPH 16#
 
 HPV_time_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
-                                   foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                   # foi_parameters = list(foi_location = 0, foi_scale = 1),
                                     foi_model = "tv_normal",
-                                     iter = 1500)
+                                     iter = 1500,
+                                   chunk_size = 5)
 
 HPV_time_plot_HPV16cri <- plot_seromodel(HPV_time_HPV16cri, 
                                            serodata = dat_cri_HPV16, 
-                                           size_text = 12, max_lambda = 0.06)
+                                           size_text = 12, max_lambda = 0.07,
+                                         ylim_prev = c(0.0, 0.5))
 
 ## FOI dependiente de edad HPV 16 COSTA RICA##
 
 HPV_age_HPV16cri <- fit_seromodel(serodata = dat_cri_HPV16,
                                   foi_model = "av_normal",
-                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                  iter = 1500)
+                                  # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 2000,
+                                  chunk_size = 5)
 
 HPV_age_plot_HPV16cri <- plot_seromodel(HPV_age_HPV16cri , 
                                         serodata = dat_cri_HPV16, 
-                                        size_text = 12,max_lambda = 0.06)
-
+                                        size_text = 12,max_lambda = 0.07,
+                                        ylim_prev = c(0.0, 0.5))
 
 cowplot::plot_grid(HPV_constant_plot_HPV16cri, HPV_time_plot_HPV16cri, HPV_age_plot_HPV16cri, ncol = 3)
 
 
+cri_hpv16 <-cowplot::plot_grid(HPV_constant_plot_HPV16cri, HPV_time_plot_HPV16cri, HPV_age_plot_HPV16cri, ncol = 3)
+jpeg(filename = "SEROFOI/plots/cri_hpv16.jpeg", width = 480*2, height = 480*2) 
+cri_hpv16 
+dev.off()
 
+rm(list = ls(pattern = "_HPV16cri"))
 
 
 
@@ -440,14 +456,14 @@ rm(list = ls(pattern = "_HPV16bra"))
 
 ## MODELO PUERTO RICO  HPV 16/18 ##
 
-dat_PRI_HPVHr<- data.frame (filter( dat, survey == "PRI-001-02"))
+dat_PRI_HPVr<- data.frame (filter( dat, survey == "PRI-001-02"))
 
 # crear columna birth_year para todos los serotipos - preparacion de datos SEROFOI
 
 dat_PRI_HPVHr <- dat_PRI_HPVHr %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
-#FOI constate  HPV 16 PUERTO RICO 
+#FOI constate  HPV 16/18PUERTO RICO 
 
 HPV_constant_PRI_HPVHr <- fit_seromodel(serodata = dat_PRI_HPVHr,
                                         foi_model = "constant",
@@ -455,18 +471,21 @@ HPV_constant_PRI_HPVHr <- fit_seromodel(serodata = dat_PRI_HPVHr,
 
 HPV_constant_plot_PRI_HPVHr <- plot_seromodel(HPV_constant_PRI_HPVHr, 
                                               serodata = dat_PRI_HPVHr, 
-                                              size_text = 12, max_lambda = max_lambda)
+                                              size_text = 12, max_lambda = max_lambda,
+                                              ylim_prev = c(0.0, 0.5))
 
-## FOI DEPENDINTE DEL TIMEPO VPH 16-18 PUERTO RICO##
+## FOI DEPENDINTE DEL TIMEPO VPH 16/18 PUERTO RICO##
 HPV_time_PRI_HPVHr<- fit_seromodel(serodata = dat_PRI_HPVHr,
                                      foi_model = "tv_normal",
-                                    foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                    iter = 1500)
+                                    # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                    iter = 1500,
+                                   chunk_size = 5)
 
 
 HPV_time_plot_PRI_HPVHr <- plot_seromodel(HPV_time_PRI_HPVHr, 
                                          serodata = dat_PRI_HPVHr, 
-                                         size_text = 12, max_lambda = max_lambda)
+                                         size_text = 12, max_lambda = max_lambda,
+                                         ylim_prev = c(0.0, 0.5))
 
 
 
@@ -474,16 +493,22 @@ HPV_time_plot_PRI_HPVHr <- plot_seromodel(HPV_time_PRI_HPVHr,
 
 HPV_age_PRI_HPVHr <- fit_seromodel(serodata = dat_PRI_HPVHr,
                                   foi_model = "av_normal",
-                                  foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                  iter = 1500)
+                                  # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                  iter = 2000,
+                                  chunk_size = 5)
 
 HPV_age_plot_PRI_HPVHr <- plot_seromodel(HPV_age_PRI_HPVHr , 
                                         serodata = dat_PRI_HPVHr, 
-                                        size_text = 12,max_lambda = max_lambda)
+                                        size_text = 12,max_lambda = max_lambda,
+                                        ylim_prev = c(0.0, 0.5))
 
 
 cowplot::plot_grid(HPV_constant_plot_PRI_HPVHr, HPV_time_plot_PRI_HPVHr,HPV_age_plot_PRI_HPVHr, ncol = 3)
 
+PRI_HPVHr<- cowplot::plot_grid(HPV_constant_plot_PRI_HPVHr, HPV_time_plot_PRI_HPVHr,HPV_age_plot_PRI_HPVHr, ncol = 3)
+jpeg(filename = "SEROFOI/plots/PRI_HPVHr.jpeg", width = 480*2, height = 480*2) 
+PRI_HPVHr
+dev.off()
 
 ## MODELO ESTADOS UNIDOS (1992) HPV 16##
 
@@ -501,28 +526,33 @@ HPV_constant_USA92_HPV16 <- fit_seromodel(serodata = dat_USA92_HPV16,
 
 HPV_constant_plot_USA92_HPV16 <- plot_seromodel(HPV_constant_USA92_HPV16, 
                                                 serodata = dat_USA92_HPV16, 
-                                                size_text = 12,max_lambda = max_lambda )
+                                                size_text = 12,max_lambda = max_lambda,
+                                                ylim_prev = c(0.0, 0.4))
 
 ## FOI DEPENDIeNTE DEL TIEMPO ESTADOS UNIDOS (1992) HPV 16 ##
 HPV_time_USA92_HPV16<- fit_seromodel(serodata = dat_USA92_HPV16,
                                        foi_model = "tv_normal",
-                                       foi_parameters = list( foi_location= 0, foi_scale = 1),
-                                       iter = 1500)
+                                       # foi_parameters = list( foi_location= 0, foi_scale = 1),
+                                       iter = 1500,
+                                     chunk_size = 5)
 
 HPV_time_plot_USA92_HPV16 <- plot_seromodel(HPV_time_USA92_HPV16, 
                                               serodata = dat_USA92_HPV16, 
-                                              size_text = 12, max_lambda = max_lambda)
+                                              size_text = 12, max_lambda = max_lambda,
+                                            ylim_prev = c(0.0, 0.4))
 
 # FOI dependiente de edad HPV 16 ESTADOS UNIDOS (1992)  ##
 
 HPV_age_USA92_HPV16<- fit_seromodel(serodata = dat_USA92_HPV16,
                                    foi_model = "av_normal",
-                                   foi_parameters = list(foi_location = 0, foi_scale = 1),
-                                   iter = 1500)
+                                   # foi_parameters = list(foi_location = 0, foi_scale = 1),
+                                   iter = 1500,
+                                   chunk_size = 5)
 
 HPV_age_plot_USA92_HPV16 <- plot_seromodel(HPV_age_USA92_HPV16, 
                                          serodata = dat_USA92_HPV16, 
-                                         size_text = 12,max_lambda = max_lambda)
+                                         size_text = 12,max_lambda = max_lambda,
+                                         ylim_prev = c(0.0, 0.4))
 
 
 
