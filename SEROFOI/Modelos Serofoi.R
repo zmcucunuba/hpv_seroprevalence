@@ -8,6 +8,10 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 
+## rm(HPV_constant_plot_HPV16bra)###
+
+pak::pkg_install("epiverse-trace/serofoi@test-av-models")
+
 
 dat <- readRDS('data/data_for_models/clean_data_total_models.RDS') 
 
@@ -64,6 +68,11 @@ HPV_age_plot_HPV18col <- plot_seromodel(HPV_age_HPV18col,
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV18col, HPV_time_plot_HPV18col,HPV_age_plot_HPV18col ,ncol = 3)
+
+col_hpv18 <- cowplot::plot_grid(HPV_constant_plot_HPV18col, HPV_time_plot_HPV18col,HPV_age_plot_HPV18col ,ncol = 3) 
+jpeg(filename = "SEROFOI/plots/col_hpv18.jpeg", width = 480*2, height = 480*2) 
+col_hpv18 
+dev.off()
 
 
 ## AJUSTE DE LOS MODELOS COLOMBIA VPH 18 ### 
@@ -344,13 +353,14 @@ dat_bra_HPV16 <- dat_bra_HPV16 %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
 #FOI constate   Brasil HPV 16
-HPV_constant_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
+HPV_constant_HPV16bra <- fit_seromodel(serodata = dat_bra_HPplorV16,
                                        foi_model = "constant",
                                        iter = 1000)
 
 HPV_constant_plot_HPV16bra <- plot_seromodel(HPV_constant_HPV16bra, 
                                              serodata = dat_bra_HPV16, 
-                                             size_text = 12, max_lambda = 0.06 )
+                                             size_text = 12, max_lambda = 0.06,
+                                             ylim_prev = c(0.0, 0.5))
 
 ## dependiet del tiempo Brasil VPH 16#
 HPV_time_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
@@ -362,7 +372,8 @@ HPV_time_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
 
 HPV_time_plot_HPV16bra <- plot_seromodel(HPV_time_HPV16bra, 
                                            serodata = dat_bra_HPV16, 
-                                           size_text = 12, max_lambda = 0.06 )
+                                           size_text = 12, max_lambda = 0.06,
+                                         ylim_prev = c(0.0, 0.5))
 
 # FOI dependiente de edad HPV 16 Brasil##
 
@@ -374,7 +385,8 @@ HPV_age_HPV16bra <- fit_seromodel(serodata = dat_bra_HPV16,
 
 HPV_age_plot_HPV16bra <- plot_seromodel(HPV_age_HPV16bra , 
                                         serodata = dat_bra_HPV16, 
-                                        size_text = 12,max_lambda = 0.06)
+                                        size_text = 12,max_lambda = 0.06,
+                                        ylim_prev = c(0.0, 0.5))
 
 
 cowplot::plot_grid(HPV_constant_plot_HPV16bra, HPV_time_plot_HPV16bra,HPV_age_plot_HPV16bra, ncol = 3)
