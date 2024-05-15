@@ -18,6 +18,12 @@ pak::pkg_install("epiverse-trace/serofoi@test-av-models-serorev")
 ## CARGA BASE LIMPIA DE MODELOS ##
 
 dat <- readRDS('data/data_for_models/clean_data_total_models.RDS') 
+ 
+## sacar promedio de edad sexual para toda las edades ##
+
+dat$sexual_debut_age_under <- as.numeric(dat$sexual_debut_age_under)
+promedio_dat <-mean(dat$sexual_debut_age_under,na.rm = TRUE)
+### prior edad sexual promedio, fuerza de infeccion inicia en 0 porque aun no tiene vida sexual### 
 
 
 #### SEROENCUESTAS COLOMBIA #####
@@ -32,6 +38,10 @@ dat_col <- data.frame (filter( dat, country == "COL"))
 dat_colp <- dat_col %>%  mutate ( birth_year = tsur - age_mean_f)
 
 dat_col_HPV18 <- data.frame (filter (dat_colp, pathogen == "HPV 18"))
+
+promedio <- mean(dat_col_HPV18$sexual_debut_age_under,na.rm = TRUE)
+ 
+dat_col_HPV18$sexual_debut_age_under <- as.numeric(dat_col_HPV18$sexual_debut_age_under)
 
 ## CREAR VARIABLE LAMBA PARA  ESCALA EJE X DE GRAFICAS DE LOS MODELOS ##
 
@@ -670,6 +680,8 @@ dat_USA_HPV18<- data.frame (filter( dat, survey == "USA-026-04"))
 
 dat_USA_HPV18 <- dat_USA_HPV18 %>%  mutate ( birth_year = tsur - age_mean_f)
 
+
+saveRDS(dat_USA_HPV18 , file = "dat_USA_HPV18.RDS")
 
 #FOI constate  HPV 18 ESTADOS UNIDOS (2003) ##
 HPV_constant_USA_HPV18 <- fit_seromodel(serodata = dat_USA_HPV18,
