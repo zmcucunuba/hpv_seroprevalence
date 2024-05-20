@@ -25,7 +25,8 @@ x <- ggplot(data = dat_mult_ages) + # data
   labs( x = "Edad", 
         y = "Seroprevalencia", fill = "Riesgo VPH")
 
-ggsave(filename = "Descriptivo/plots/grafico_alta_total.png", plot = x, dpi = 400, width = 16, height = 9)
+
+##### ggsave(filename = "Descriptivo/plots/grafico_alta_total.png", plot = x, dpi = 400, width = 16, height = 9)
 
 
 
@@ -132,7 +133,7 @@ p <- ggplot(data = hpvHQ_all) +
        colour = "País,año")
 
 
-ggsave(filename = "Descriptivo/plots/HPVALLPI.png", plot = p, dpi = 300, width = 12, height = 8)
+
 
 jpeg(filename = "Descriptivo/plots/HPVALLPI.jpeg", width = 480*2, height = 480*2) 
 p
@@ -167,9 +168,9 @@ y <- ggplot(data = hpvHQ_all) +
     strip.text.x = element_text(size = 18) )   # Ajusta el tamaño del texto de las facetas en el eje x
 
 
-ggsave(filename = "Descriptivo/plots/grafico_allHVP3G.png", plot = y, dpi = 400, width = 16, height = 9)
 
-jpeg(filename = "Descriptivo/plots/grafico_allHVP3G..jpeg", width = 480*2, height = 480*2) 
+
+jpeg(filename = "Descriptivo/plots/grafico_allHVP3G.jpeg", width = 480*2, height = 480*2) 
 y
 dev.off()
 
