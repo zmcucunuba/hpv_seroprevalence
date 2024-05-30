@@ -1,25 +1,28 @@
 # SEROFOI ##
 
+## pak::pkg_install("epiverse-trace/serofoi@full-refac-test")## instalacion ##
+
 library(serofoi)
-library(cowplot)
-library(lubridate)
-library(loo)
 library(openxlsx)
-library(ggplot2)
 library(dplyr)
-library(patchwork)
+
+options(mc.cores=4)
+
+
+
 
 ## CARGA BASE LIMPIA DE MODELOS ##
 
 dat <- readRDS('data/data_for_models/clean_data_total_models.RDS')
 
 ## CREAR COLUMNA DE AÑO DE NACIMIENTO ##
+
 dat0 <- dat %>%  mutate ( birth_year = tsur - age_mean_f)
 
 
 
 
-options(mc.cores=4)
+
 
 ### SEROENCUESTA COLOMBIA VPH 18###
 
@@ -28,6 +31,7 @@ options(mc.cores=4)
 dat_col_HPV18 <- data.frame (filter( dat0, country == "COL")  %>% filter (pathogen == "HPV 18"))
 
 ## SELECCCION DE DATOS QUE SE REQUIEREN PARA LOS MODELOS ##
+
 
 col_HPV18 <- dat_col_HPV18 %>%
   mutate(
@@ -96,6 +100,7 @@ foi_index <- c(
   rep(1, 15),
   16:max(col_HPV18$age_max)
 )
+
 init <- function() {
   list(foi_vector = rep(0.01, max(foi_index)))
 }
@@ -110,7 +115,8 @@ col_HPV18_age_no_seroreversion <- fit_seromodel(
 
 col_HPV18_age_no_seroreversion_plot <- plot_seromodel(
   seromodel = col_HPV18_age_no_seroreversion,
-  serosurvey = col_HPV18
+  serosurvey = col_HPV18, size_text = 8,
+  foi_max = 0.4
 )
 plot(col_HPV18_age_no_seroreversion_plot)
 
@@ -134,7 +140,7 @@ col_HPV18_age_seroreversion <- fit_seromodel(
   seroreversion_prior = sf_normal(1, 0.5)
 )
 
-col_HPV18l_age_seroreversion_plot <- plot_seromodel(
+col_HPV18_age_seroreversion_plot <- plot_seromodel(
   seromodel = col_HPV18_age_seroreversion,
   serosurvey = col_HPV18
 )
@@ -143,15 +149,29 @@ plot(col_HPV18_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
-  col_HPV18_constant_no_seroreversion_plot,
-  col_HPV18_constant_seroreversion_plot,
+col_HPV18_all_models_plot <- cowplot::plot_grid(
   col_HPV18_time_no_seroreversion_plot,
   col_HPV18_age_no_seroreversion_plot,
   col_HPV18_age_seroreversion_plot,
-  ncol = 5
+  ncol = 3
 )
 plot(col_HPV18_all_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv18.jpeg", width = 480*2, height = 480*2) 
+col_HPV18_all_models_plot
+dev.off()
+
+col_HPV18_constant_models_plot <- cowplot::plot_grid(
+  col_HPV18_constant_no_seroreversion_plot,
+  col_HPV18_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(col_HPV18_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv18_conts.jpeg", width = 480*2, height = 480*2) 
+col_HPV18_constant_models_plot
+dev.off()
+
+
+
 
 ### SEROENCUESTA COLOMBIA VPH 16###
 
@@ -275,15 +295,27 @@ plot(col_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
-  col_HPV16_constant_no_seroreversion_plot,
-  col_HPV16_constant_seroreversion_plot,
+
+col_HPV16_all_models_plot <- cowplot::plot_grid(
   col_HPV16_time_no_seroreversion_plot,
   col_HPV16_age_no_seroreversion_plot,
   col_HPV16_age_seroreversion_plot,
-  ncol = 5
+  ncol = 3
 )
 plot(col_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv16.jpeg", width = 480*2, height = 480*2) 
+col_HPV16_all_models_plot
+dev.off()
+
+col_HPV16_constant_models_plot <- cowplot::plot_grid(
+  col_HPV16_constant_no_seroreversion_plot,
+  col_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(col_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv16_conts.jpeg", width = 480*2, height = 480*2) 
+col_HPV16_constant_models_plot
+dev.off()
 
 
 
@@ -412,7 +444,7 @@ plot(col_HPVHr_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+col_HPVHr_models_plot <- cowplot::plot_grid(
   col_HPVHr_constant_no_seroreversion_plot,
   col_HPVHr_constant_seroreversion_plot,
   col_HPVHr_time_no_seroreversion_plot,
@@ -420,7 +452,30 @@ all_models_plot <- cowplot::plot_grid(
   col_HPVHr_age_seroreversion_plot,
   ncol = 5
 )
-plot(col_HPV16_all_models_plot)
+plot(col_HPVHr_all_models_plot)
+
+
+col_HPVHr_all_models_plot <- cowplot::plot_grid(
+  col_HPVHr_time_no_seroreversion_plot,
+  col_HPVHr_age_no_seroreversion_plot,
+  col_HPVHr_age_seroreversion_plot,
+  ncol = 3
+)
+plot(col_HPVHr_all_models_plot)
+jpeg(filename = "SEROFOI/plots/col_HPVHr.jpeg", width = 480*2, height = 480*2) 
+col_HPV16_all_models_plot
+dev.off()
+
+col_HPVHr_constant_models_plot <- cowplot::plot_grid(
+  col_HPVHr_constant_no_seroreversion_plot,
+  col_HPVHr_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(col_HPVHr_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv16_conts.jpeg", width = 480*2, height = 480*2) 
+col_HPVHr_constant_models_plot
+dev.off()
+
 
 
 ### SEROENCUESTA COSTA RICA VPH 18 ###
@@ -547,7 +602,7 @@ plot(CRI_HPV18_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+CRI_HPV18_models_plot <- cowplot::plot_grid(
   CRI_HPV18_constant_no_seroreversion_plot,
   CRI_HPV18_constant_seroreversion_plot,
   CRI_HPV18_time_no_seroreversion_plot,
@@ -556,6 +611,29 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(CRI_HPV18_all_models_plot)
+
+
+CRI_HPV18_all_models_plot <- cowplot::plot_grid(
+  CRI_HPV18_time_no_seroreversion_plot,
+  CRI_HPV18_age_no_seroreversion_plot,
+  CRI_HPV18_age_seroreversion_plot,
+  ncol = 3
+)
+plot(CRI_HPV18_all_models_plot)
+jpeg(filename = "SEROFOI/plots/col_HPVHr.jpeg", width = 480*2, height = 480*2) 
+CRI_HPV18_all_models_plot
+dev.off()
+
+CRI_HPV18_constant_models_plot <- cowplot::plot_grid(
+  CRI_HPV18_constant_no_seroreversion_plot,
+  CRI_HPV18_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(CRI_HPV18_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/col_hpv16_conts.jpeg", width = 480*2, height = 480*2) 
+CRI_HPV18_constant_models_plot
+dev.off()
+
 
 
 ### SEROENCUESTA COSTA RICA VPH 16 ###
@@ -683,7 +761,7 @@ plot(CRI_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+CRI_HPV16_models_plot <- cowplot::plot_grid(
   CRI_HPV16_constant_no_seroreversion_plot,
   CRI_HPV16_constant_seroreversion_plot,
   CRI_HPV16_time_no_seroreversion_plot,
@@ -692,6 +770,29 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(CRI_HPV16_all_models_plot)
+
+
+CRI_HPV16_all_models_plot <- cowplot::plot_grid(
+  CRI_HPV16_time_no_seroreversion_plot,
+  CRI_HPV16_age_no_seroreversion_plot,
+  CRI_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( CRI_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/CRI_HPV16.jpeg", width = 480*2, height = 480*2) 
+CRI_HPV16_all_models_plot
+dev.off()
+
+CRI_HPV16_constant_models_plot <- cowplot::plot_grid(
+  CRI_HPV16_constant_no_seroreversion_plot,
+  CRI_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot( CRI_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/CRI_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+CRI_HPV16_constant_models_plot
+dev.off()
+
 
 
 ### SEROENCUESTA BRASIL HPV 16  ###
@@ -819,7 +920,7 @@ plot(BRA_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+BRA_HPV16_models_plot <- cowplot::plot_grid(
   BRA_HPV16_constant_no_seroreversion_plot,
   BRA_HPV16_constant_seroreversion_plot,
   BRA_HPV16_time_no_seroreversion_plot,
@@ -828,6 +929,29 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(BRA_HPV16_all_models_plot)
+
+
+BRA_HPV16_all_models_plot <- cowplot::plot_grid(
+  BRA_HPV16_time_no_seroreversion_plot,
+  BRA_HPV16_age_no_seroreversion_plot,
+  BRA_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( BRA_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/BRA_HPV16.jpeg", width = 480*2, height = 480*2) 
+BRA_HPV16_all_models_plot
+dev.off()
+
+BRA_HPV16_constant_models_plot <- cowplot::plot_grid(
+  BRA_HPV16_constant_no_seroreversion_plot,
+  BRA_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot( BRA_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/BRA_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+CRI_HPV16_constant_models_plot
+dev.off()
+
 
 ### SEROENCUESTA ESTADOS UNIDOS HPV 16 ###
 
@@ -954,7 +1078,7 @@ plot(USA92_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+USA92_HPV16_models_plot <- cowplot::plot_grid(
   USA92_HPV16_constant_no_seroreversion_plot,
   USA92_HPV16_constant_seroreversion_plot,
   USA92_HPV16_time_no_seroreversion_plot,
@@ -962,7 +1086,31 @@ all_models_plot <- cowplot::plot_grid(
   USA92_HPV16_age_seroreversion_plot,
   ncol = 5
 )
-plot(PRI_HPV16_all_models_plot)
+plot(USA92_HPV16_all_models_plot)
+
+
+USA92_HPV16_all_models_plot <- cowplot::plot_grid(
+  USA92_HPV16_time_no_seroreversion_plot,
+  USA92_HPV16_age_no_seroreversion_plot,
+  USA92_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( USA92_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/USA92_HPV16.jpeg", width = 480*2, height = 480*2) 
+USA92_HPV16_all_models_plot
+dev.off()
+
+USA92_HPV16_constant_models_plot <- cowplot::plot_grid(
+  USA92_HPV16_constant_no_seroreversion_plot,
+  USA92_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot( USA92_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/USA92_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+USA92_HPV16_constant_models_plot
+dev.off()
+
+
 
 
 ### SEROENCUESTA PUERTO RICO HPV 16/18  ###
@@ -1090,7 +1238,7 @@ plot(PRI_HPVHr_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+PRI_HPVHr_models_plot <- cowplot::plot_grid(
   PRI_HPVHr_constant_no_seroreversion_plot,
   PRI_HPVHr_constant_seroreversion_plot,
   PRI_HPVHr_time_no_seroreversion_plot,
@@ -1099,6 +1247,29 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(PRI_HPVHr_all_models_plot)
+
+
+PRI_HPVHr_all_models_plot <- cowplot::plot_grid(
+  PRI_HPVHr_time_no_seroreversion_plot,
+  PRI_HPVHr_age_no_seroreversion_plot,
+  PRI_HPVHr_age_seroreversion_plot,
+  ncol = 3
+)
+plot( PRI_HPVHr_all_models_plot)
+jpeg(filename = "SEROFOI/plots/PRI_HPVHr.jpeg", width = 480*2, height = 480*2) 
+PRI_HPVHr_all_models_plot
+dev.off()
+
+PRI_HPVHr_constant_models_plot <- cowplot::plot_grid(
+  PRI_HPVHr_constant_no_seroreversion_plot,
+  PRI_HPVHr_constant_seroreversion_plot,
+  ncol = 2)
+
+plot( PRI_HPVHr_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/PRI_HPVHr_conts.jpeg", width = 480*2, height = 480*2) 
+PRI_HPVHr_constant_models_plot
+dev.off()
+
 
 
 
@@ -1230,7 +1401,7 @@ plot(USA92_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+USA92_HPV16_models_plot <- cowplot::plot_grid(
   USA92_HPV16_constant_no_seroreversion_plot,
   USA92_HPV16_constant_seroreversion_plot,
   USA92_HPV16_time_no_seroreversion_plot,
@@ -1238,7 +1409,30 @@ all_models_plot <- cowplot::plot_grid(
   USA92_HPV16_age_seroreversion_plot,
   ncol = 5
 )
-plot(PRI_HPV16_all_models_plot)
+plot(USA92_HPV16_all_models_plot)
+
+
+
+USA92_HPV16_all_models_plot <- cowplot::plot_grid(
+  USA92_HPV16_time_no_seroreversion_plot,
+  USA92_HPV16_age_no_seroreversion_plot,
+  USA92_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( USA92_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/USA92_HPV16.jpeg", width = 480*2, height = 480*2) 
+USA92_HPV16_all_models_plot
+dev.off()
+
+USA92_HPV16_constant_models_plot <- cowplot::plot_grid(
+  USA92_HPV16_constant_no_seroreversion_plot,
+  USA92_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(USA92_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/USA92_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+USA92_HPV16_constant_models_plot
+dev.off()
 
 
 ### SEROENCUESTA ESTADO UNIDOS (2003) HPV 18  ###
@@ -1366,7 +1560,7 @@ plot(USA_HPV18_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+USA_HPV18_models_plot <- cowplot::plot_grid(
   USA_HPV18_constant_no_seroreversion_plot,
   USA_HPV18_constant_seroreversion_plot,
   USA_HPV18_time_no_seroreversion_plot,
@@ -1376,6 +1570,28 @@ all_models_plot <- cowplot::plot_grid(
 )
 plot(USA_HPV18_all_models_plot)
 
+
+
+USA_HPV186_all_models_plot <- cowplot::plot_grid(
+  USA_HPV18_time_no_seroreversion_plot,
+  USA_HPV18_age_no_seroreversion_plot,
+  USA_HPV18_age_seroreversion_plot,
+  ncol = 3
+)
+plot( USA_HPV18_all_models_plot)
+jpeg(filename = "SEROFOI/plots/USA_HPV18.jpeg", width = 480*2, height = 480*2) 
+USA_HPV18_all_models_plot
+dev.off()
+
+USA_HPV18_constant_models_plot <- cowplot::plot_grid(
+  USA_HPV18_constant_no_seroreversion_plot,
+  USA_HPV18_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(USA_HPV18_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/USA_HPV18_conts.jpeg", width = 480*2, height = 480*2) 
+USA_HPV18_constant_models_plot
+dev.off()
 
 
 
@@ -1504,7 +1720,7 @@ plot(USA_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+USA_HPV16_models_plot <- cowplot::plot_grid(
   USA_HPV16_constant_no_seroreversion_plot,
   USA_HPV16_constant_seroreversion_plot,
   USA_HPV16_time_no_seroreversion_plot,
@@ -1513,6 +1729,27 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(USA_HPV16_all_models_plot)
+
+USA_HPV16_all_models_plot <- cowplot::plot_grid(
+  USA_HPV16_time_no_seroreversion_plot,
+  USA_HPV16_age_no_seroreversion_plot,
+  USA_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( USA_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/USA_HPV16.jpeg", width = 480*2, height = 480*2) 
+USA_HPV16_all_models_plot
+dev.off()
+
+USA_HPV16_constant_models_plot <- cowplot::plot_grid(
+  USA_HPV16_constant_no_seroreversion_plot,
+  USA_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(USA_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/USA_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+USA_HPV16_constant_models_plot
+dev.off()
 
 
 
@@ -1777,7 +2014,7 @@ plot(NGA_HPV16_age_seroreversion_plot)
 
 # Gráfica conjunta de todos los modelos
 
-all_models_plot <- cowplot::plot_grid(
+NGA_HPV16_models_plot <- cowplot::plot_grid(
   NGA_HPV16_constant_no_seroreversion_plot,
   NGA_HPV16constant_seroreversion_plot,
   NGA_HPV16_time_no_seroreversion_plot,
@@ -1786,6 +2023,28 @@ all_models_plot <- cowplot::plot_grid(
   ncol = 5
 )
 plot(NGA_HPV16_all_models_plot)
+
+
+NGA_HPV16_all_models_plot <- cowplot::plot_grid(
+  NGA_HPV16_time_no_seroreversion_plot,
+  NGA_HPV16_age_no_seroreversion_plot,
+  NGA_HPV16_age_seroreversion_plot,
+  ncol = 3
+)
+plot( NGA_HPV16_all_models_plot)
+jpeg(filename = "SEROFOI/plots/NGA_HPV16.jpeg", width = 480*2, height = 480*2) 
+NGA_HPV16_all_models_plot
+dev.off()
+
+NGA_HPV16_constant_models_plot <- cowplot::plot_grid(
+  NGA_HPV16_constant_no_seroreversion_plot,
+  NGA_HPV16_constant_seroreversion_plot,
+  ncol = 2)
+
+plot(NGA_HPV16_constant_models_plot)
+jpeg(filename = "SEROFOI/plots/NGA_HPV16_conts.jpeg", width = 480*2, height = 480*2) 
+NGA_HPV16_constant_models_plot
+dev.off()
 
 
 
