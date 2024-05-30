@@ -1520,11 +1520,11 @@ plot(USA_HPV16_all_models_plot)
 
 ## CREAR DATA.FRAME DE SEROENCUESTA ## 
 
-dat_TWN_HPV18 <- data.frame (filter( dat0, survey == "TWN-027-02"))
+dat_TWN_HPV16 <- data.frame (filter( dat0, survey == "TWN-025-01"))
 
 ## SELECCCION DE DATOS QUE SE REQUIEREN PARA LOS MODELOS ##
 
-TWN_HPV18 <- dat_TWN_HPV18 %>%
+TWN_HPV16 <- dat_TWN_HPV18 %>%
   mutate(
     survey = paste(survey, pathogen)
   ) %>%
@@ -1533,59 +1533,59 @@ TWN_HPV18 <- dat_TWN_HPV18 %>%
     n_seropositive = counts,
     sample_size = total)
 
-plot_serosurvey(TWN_HPV18)
+plot_serosurvey(TWN_HPV16)
 
 
 # Modelo constante sin seroreversion
 
-TWN_HPV18_constant_no_seroreversion <- fit_seromodel(
-  serosurvey = TWN_HPV18,
+TWN_HPV16_constant_no_seroreversion <- fit_seromodel(
+  serosurvey = TWN_HPV16,
   model_type = "constant",
   foi_prior = sf_uniform() ,
   is_seroreversion = FALSE
 )
 
-TWN_HPV18_constant_no_seroreversion_plot <- serofoi:::plot_seromodel(
-  seromodel = TWN_HPV18_constant_no_seroreversion,
-  serosurvey = TWN_HPV18,
+TWN_HPV16_constant_no_seroreversion_plot <- serofoi:::plot_seromodel(
+  seromodel = TWN_HPV16_constant_no_seroreversion,
+  serosurvey = TWN_HPV16,
 )
 
-plot(TWN_HPV18_constant_no_seroreversion_plot)
+plot(TWN_HPV16_constant_no_seroreversion_plot)
 
 # Modelo constante con seroreversion
 
 
-TWN_HPV18_constant_seroreversion <- fit_seromodel(
-  serosurvey = TWN_HPV18,
+TWN_HPV16_constant_seroreversion <- fit_seromodel(
+  serosurvey = TWN_HPV16,
   model_type = "constant",
   foi_prior = sf_uniform(),
   is_seroreversion = TRUE
 )
 
-TWN_HPV18_constant_seroreversion_plot <- plot_seromodel(
-  seromodel = TWN_HPV18_constant_seroreversion,
-  serosurvey = TWN_HPV18
+TWN_HPV16_constant_seroreversion_plot <- plot_seromodel(
+  seromodel = TWN_HPV16_constant_seroreversion,
+  serosurvey = TWN_HPV16
 )
 plot(TWN_HPV18_constant_seroreversion_plot)
 
 # Modelo dependiente del tiempo sin seroreversion
 
 init <- function() {
-  list(foi_vector = rep(0.01, max(TWN_HPV18$age_max)))
+  list(foi_vector = rep(0.01, max(TWN_HPV16$age_max)))
 }
-TWN_HPV18_time_no_seroreversion <- fit_seromodel(
-  serosurvey = TWN_HPV18,
+TWN_HPV16_time_no_seroreversion <- fit_seromodel(
+  serosurvey = TWN_HPV16,
   model_type = "time",
   foi_prior = sf_normal(),
   is_seroreversion = FALSE,
   init = init
 )
 
-TWN_HPV18_time_no_seroreversion_plot <- plot_seromodel(
-  seromodel = TWN_HPV18_time_no_seroreversion,
-  serosurvey = TWN_HPV18
+TWN_HPV16_time_no_seroreversion_plot <- plot_seromodel(
+  seromodel = TWN_HPV16_time_no_seroreversion,
+  serosurvey = TWN_HPV16
 )
-plot(TWN_HPV18_time_no_seroreversion_plot)
+plot(TWN_HPV16_time_no_seroreversion_plot)
 
 # Modelo dependiente de la edad sin seroreversion
 
@@ -1596,8 +1596,8 @@ foi_index <- c(
 init <- function() {
   list(foi_vector = rep(0.01, max(foi_index)))
 }
-TWN_HPV18_age_no_seroreversion <- fit_seromodel(
-  serosurvey = TWN_HPV18,
+TWN_HPV16_age_no_seroreversion <- fit_seromodel(
+  serosurvey = TWN_HPV16,
   model_type = "age",
   foi_prior = sf_normal(1e-4, 1e-5),
   foi_index = foi_index,
@@ -1605,9 +1605,9 @@ TWN_HPV18_age_no_seroreversion <- fit_seromodel(
   init = init
 )
 
-TWN_HPV18_age_no_seroreversion_plot <- plot_seromodel(
-  seromodel = TWN_HPV18_age_no_seroreversion,
-  serosurvey = TWN_HPV18
+TWN_HPV16_age_no_seroreversion_plot <- plot_seromodel(
+  seromodel = TWN_HPV16_age_no_seroreversion,
+  serosurvey = TWN_HPV16
 )
 plot(TWN_HPV18_age_no_seroreversion_plot)
 
@@ -1615,7 +1615,7 @@ plot(TWN_HPV18_age_no_seroreversion_plot)
 
 foi_index <- c(
   rep(1, 15),
-  16:max(TWN_HPV18$age_max)
+  16:max(TWN_HPV16$age_max)
 )
 
 
@@ -1623,8 +1623,8 @@ init <- function() {
   list(foi_vector = rep(0.01, max(foi_index)))
 }
 
-TWN_HPV18_age_seroreversion <- fit_seromodel(
-  serosurvey = TWN_HPV18,
+TWN_HPV16_age_seroreversion <- fit_seromodel(
+  serosurvey = TWN_HPV16,
   model_type = "age",
   foi_prior = sf_normal(1e-4, 1e-5),
   foi_index = foi_index,
@@ -1632,24 +1632,24 @@ TWN_HPV18_age_seroreversion <- fit_seromodel(
   seroreversion_prior = sf_normal(1, 0.5)
 )
 
-TWN_HPV18_age_seroreversion_plot <- plot_seromodel(
-  seromodel = TWN_HPV18_age_seroreversion,
-  serosurvey = TWN_HPV18
+TWN_HPV16_age_seroreversion_plot <- plot_seromodel(
+  seromodel = TWN_HPV16_age_seroreversion,
+  serosurvey = TWN_HPV16
 )
-plot(TWN_HPV18_age_seroreversion_plot)
+plot(TWN_HPV16_age_seroreversion_plot)
 
 
 # Gráfica conjunta de todos los modelos
 
 all_models_plot <- cowplot::plot_grid(
-  TWN_HPV18_constant_no_seroreversion_plot,
-  TWN_HPV18constant_seroreversion_plot,
-  TWN_HPV18_time_no_seroreversion_plot,
-  TWN_HPV18_age_no_seroreversion_plot,
-  TWN_HPV18_age_seroreversion_plot,
+  TWN_HPV16_constant_no_seroreversion_plot,
+  TWN_HPV16constant_seroreversion_plot,
+  TWN_HPV16_time_no_seroreversion_plot,
+  TWN_HPV16_age_no_seroreversion_plot,
+  TWN_HPV16_age_seroreversion_plot,
   ncol = 5
 )
-plot(TWN_HPV18_all_models_plot)
+plot(TWN_HPV16_all_models_plot)
 
 
 ### SEROENCUESTA  NIGERIA HPV 16 ###
