@@ -12,8 +12,7 @@ library(patchwork)
 
 #### instalacion de SEROFOI en caso de cambios ###
 
-pak::pkg_install("epiverse-trace/serofoi@test-av-models")
-pak::pkg_install("epiverse-trace/serofoi@test-av-models-serorev")
+pak::pkg_install("epiverse-trace/serofoi@full-refac-test")
 
 ## CARGA BASE LIMPIA DE MODELOS ##
 
@@ -415,7 +414,7 @@ rm(list = ls(pattern = "_HPV18cri"))
 
 
 
-## AJUSTE DE LOS MODELOS  COSTA RICA CRI VPH18 ### 
+## AJUSTE DE LOS MODELOS  COSTA RICA CRI VPH1 ### 
 
 constant_HPV16 <- run_seromodel(serodata = dat_col_HPVhr, foi_model = "constant", n_iters = 1000)
 normal_HPV16 <- run_seromodel(serodata = dat_col_HPVhr, foi_model = "tv_normal", n_iters = 1500)
