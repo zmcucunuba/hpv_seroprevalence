@@ -5,7 +5,6 @@
 library(serofoi)
 library(openxlsx)
 library(dplyr)
-
 options(mc.cores=4)
 
 
@@ -14,13 +13,6 @@ options(mc.cores=4)
 ## CARGA BASE LIMPIA DE MODELOS ##
 
 dat <- readRDS('data/data_for_models/clean_data_total_models.RDS')
-
-## CREAR COLUMNA DE AÑO DE NACIMIENTO ##
-
-dat0 <- dat %>%  mutate ( birth_year = tsur - age_mean_f)
-
-
-
 
 
 
@@ -32,6 +24,12 @@ dat_col_HPV18 <- data.frame (filter( dat0, country == "COL")  %>% filter (pathog
 
 ## SELECCCION DE DATOS QUE SE REQUIEREN PARA LOS MODELOS ##
 
+select(survey, tsur, age_min, age_max, counts, total) %>%
+  rename(
+    n_seropositive = counts,
+    sample_size = total)
+
+plot_serosurvey(col_HPV18)
 
 col_HPV18 <- dat_col_HPV18 %>%
   mutate(
@@ -54,12 +52,6 @@ col_HPV18_constant_no_seroreversion <- fit_seromodel(
   is_seroreversion = FALSE
 )
 
-col_HPV18_constant_no_seroreversion_plot <- serofoi:::plot_seromodel(
-  seromodel = col_HPV18_constant_no_seroreversion,
-  serosurvey = col_HPV18,
-  )
-
-plot(col_HPV18_constant_no_seroreversion_plot)
 
 # Modelo constante con seroreversion
 
@@ -67,16 +59,13 @@ col_HPV18_constant_seroreversion <- fit_seromodel(
   serosurvey = col_HPV18,
   model_type = "constant",
   foi_prior = sf_uniform(),
-  is_seroreversion = TRUE
+  is_seroreversion = TRUE,
+  seroreversion_prior = sf_uniform(0.0, 2.0)
 )
 
-col_HPV18_constant_seroreversion_plot <- plot_seromodel(
-  seromodel = col_HPV18_constant_seroreversion,
-  serosurvey = col_HPV18
-)
-plot(col_HPV18_constant_seroreversion_plot)
 
 # Modelo dependiente del tiempo sin seroreversion
+
 init <- function() {
   list(foi_vector = rep(0.01, max(col_HPV18$age_max)))
 }
@@ -88,11 +77,6 @@ col_HPV18_time_no_seroreversion <- fit_seromodel(
   init = init
 )
 
-col_HPV18_time_no_seroreversion_plot <- plot_seromodel(
-  seromodel = col_HPV18_time_no_seroreversion,
-  serosurvey = col_HPV18
-)
-plot(col_HPV18_time_no_seroreversion_plot)
 
 # Modelo dependiente de la edad sin seroreversion
 
@@ -100,10 +84,10 @@ foi_index <- c(
   rep(1, 15),
   16:max(col_HPV18$age_max)
 )
-
 init <- function() {
   list(foi_vector = rep(0.01, max(foi_index)))
 }
+
 col_HPV18_age_no_seroreversion <- fit_seromodel(
   serosurvey = col_HPV18,
   model_type = "age",
@@ -113,12 +97,6 @@ col_HPV18_age_no_seroreversion <- fit_seromodel(
   init = init
 )
 
-col_HPV18_age_no_seroreversion_plot <- plot_seromodel(
-  seromodel = col_HPV18_age_no_seroreversion,
-  serosurvey = col_HPV18, size_text = 8,
-  foi_max = 0.4
-)
-plot(col_HPV18_age_no_seroreversion_plot)
 
 # Modelo dependiente de la edad con seroreversion
 
@@ -131,23 +109,63 @@ init <- function() {
   list(foi_vector = rep(0.01, max(foi_index)))
 }
 
-col_HPV18_age_seroreversion <- fit_seromodel(
+# Gráficas de todos los modelos
+size_text <- 8
+## Constante - no seroreversion
+col_HPV18_constant_no_seroreversion_plot <- plot_seromodel(
+  seromodel = col_HPV18_constant_no_seroreversion,
   serosurvey = col_HPV18,
-  model_type = "age",
-  foi_prior = sf_normal(1e-4, 1e-5),
-  foi_index = foi_index,
-  is_seroreversion = TRUE,
-  seroreversion_prior = sf_normal(1, 0.5)
+  size_text = size_text
 )
+plot(col_HPV18_constant_no_seroreversion_plot)
 
+## Constante - seroreversion
+col_HPV18_constant_seroreversion_plot <- plot_seromodel(
+  seromodel = col_HPV18_constant_seroreversion,
+  serosurvey = col_HPV18,
+  size_text = size_text
+)
+plot(col_HPV18_constant_seroreversion_plot)
+
+## Tiempo - no seroreversion
+col_HPV18_time_no_seroreversion_plot <- plot_seromodel(
+  seromodel = col_HPV18_time_no_seroreversion,
+  serosurvey = col_HPV18,
+  size_text = size_text
+)
+plot(col_HPV18_time_no_seroreversion_plot)
+
+## Edad - no seroreversion
+col_HPV18_age_no_seroreversion_plot <- plot_seromodel(
+  seromodel = col_HPV18_age_no_seroreversion,
+  serosurvey = col_HPV18,
+  size_text = size_text
+)
+plot(col_HPV18_age_no_seroreversion_plot)
+
+## Edad - seroreversion
 col_HPV18_age_seroreversion_plot <- plot_seromodel(
   seromodel = col_HPV18_age_seroreversion,
-  serosurvey = col_HPV18
+  serosurvey = col_HPV18,
+  size_text = size_text
 )
 plot(col_HPV18_age_seroreversion_plot)
 
 
 # Gráfica conjunta de todos los modelos
+
+
+col_HPV18_all_models_plot <- cowplot::plot_grid(
+  col_HPV18_constant_no_seroreversion_plot,
+  col_HPV18_constant_seroreversion_plot,
+  col_HPV18_time_no_seroreversion_plot,
+  col_HPV18_age_no_seroreversion_plot,
+  col_HPV18_age_seroreversion_plot,
+  ncol = 5
+)
+
+plot(col_HPV18_all_models_plot)
+
 
 col_HPV18_all_models_plot <- cowplot::plot_grid(
   col_HPV18_time_no_seroreversion_plot,
