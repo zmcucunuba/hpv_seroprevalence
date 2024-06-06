@@ -4,6 +4,7 @@
 library(serofoi)
 library(openxlsx)
 library(dplyr)
+library(ggplot2)
 options(mc.cores=4)
 
 
@@ -811,19 +812,20 @@ col_HPV16_plot <- cowplot::plot_grid(
   col_HPV16_plot_foi,
   col_HPV16_plot_rhats,
   nrow = 3,
-  align = "hv",
-  grid.arrange (nrow = 3, ncol = 5)
+  align = "hv"
 )
 
 plot(col_HPV16_plot)
-jpeg(filename = "SEROFOI/plots/all_col_hpv16_.jpeg", width = 500*2, height = 500*2) 
-col_HPV18_plot
+jpeg(filename = "SEROFOI/plots/all_col_hpv16_.jpeg", width = 11, height = 8, units = "in", res = 300) 
+col_HPV16_plot
 dev.off()
 
 png(filename = "SEROFOI/plots/all_col_hpv16_.png", width = 500*2, height = 500*2) 
 col_HPV16_plot
 dev.off()
 
+
+install.packages("gridExtra")
 
 
 
