@@ -417,6 +417,7 @@ dev.off()
 
 
 ## CREAR DATA.FRAME DE SEROENCUESTA ## 
+
 col_HPV16 <- dat %>% filter(
   country == "COL" & pathogen == "HPV 16"
 ) %>%
@@ -647,7 +648,9 @@ col_HPV16_summary <- dplyr::bind_rows(
 write.xlsx(col_HPV16_summary, file = "SEROFOI/data frame/col_HPV16_summary.xlsx")
 
 # Gráfica de seroprevalencia
+
 size_text <- 8
+
 ## Constante - no seroreversion
 
 col_HPV16_constant_no_seroreversion_plot_seroprev <- plot_seroprevalence_estimates(
@@ -707,7 +710,7 @@ col_HPV16_plot_seroprev <- cowplot::plot_grid(
 
 # Gráfica de foi
 
-foi_max <- 0.4
+foi_max <- 0.004
 
 ## Tiempo - no seroreversion
 
@@ -715,10 +718,10 @@ col_HPV16_time_no_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_time_no_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max <- 0.004
+  foi_max = 0.4
 )
 
-
+plot(col_HPV16_time_no_seroreversion_plot_foi)
 
 
 ## Edad - no seroreversion
@@ -727,10 +730,10 @@ col_HPV16_age_no_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_age_no_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max <- 0.004
+  foi_max = 0.4
 )
 
-
+plot(col_HPV16_age_no_seroreversion_plot_foi)
 
 ## Edad - seroreversion
 
@@ -738,8 +741,10 @@ col_HPV16_age_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_age_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max <- 0.004
+  foi_max = 0.4
  )
+
+plot(col_HPV16_age_seroreversion_plot_foi)
 
 ## Grafica conjunta foi
 
@@ -806,7 +811,8 @@ col_HPV16_plot <- cowplot::plot_grid(
   col_HPV16_plot_foi,
   col_HPV16_plot_rhats,
   nrow = 3,
-  align = "hv"
+  align = "hv",
+  grid.arrange (nrow = 3, ncol = 5)
 )
 
 plot(col_HPV16_plot)
