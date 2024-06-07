@@ -40,6 +40,7 @@ col_HPV18_constant_seroreversion <- fit_seromodel(
 )
 
 # Modelo dependiente del tiempo sin seroreversion
+
 foi_index <- get_foi_index(
   serosurvey = col_HPV18,
   group_size = 10
@@ -129,7 +130,8 @@ plot(col_HPV18_time_no_seroreversion_plot)
 col_HPV18_age_no_seroreversion_plot <- plot_seromodel(
   seromodel = col_HPV18_age_no_seroreversion,
   serosurvey = col_HPV18,
-  size_text = size_text
+  size_text = size_text,
+  max_lambda =0.015
 )
 plot(col_HPV18_age_no_seroreversion_plot)
 
