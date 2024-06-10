@@ -711,7 +711,7 @@ col_HPV16_plot_seroprev <- cowplot::plot_grid(
 
 # Gráfica de foi
 
-foi_max <- 0.004
+foi_max <- 0.5
 
 ## Tiempo - no seroreversion
 
@@ -719,7 +719,7 @@ col_HPV16_time_no_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_time_no_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max = 0.4
+  foi_max = foi_max
 )
 
 plot(col_HPV16_time_no_seroreversion_plot_foi)
@@ -731,7 +731,7 @@ col_HPV16_age_no_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_age_no_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max = 0.4
+  foi_max = foi_max
 )
 
 plot(col_HPV16_age_no_seroreversion_plot_foi)
@@ -742,7 +742,7 @@ col_HPV16_age_seroreversion_plot_foi <- plot_foi_estimates(
   seromodel = col_HPV16_age_seroreversion,
   serosurvey = col_HPV16,
   size_text = size_text,
-  foi_max = 0.4
+  foi_max = foi_max
  )
 
 plot(col_HPV16_age_seroreversion_plot_foi)
@@ -4410,7 +4410,7 @@ NGA_HPV16_plot_rhats <- cowplot::plot_grid(
   align = "hv"
 )
 
-# Gráfica conjunta col NGA_HPV16
+# Gráfica conjunta  NGA_HPV16
 
 NGA_HPV16_plot <- cowplot::plot_grid(
   NGA_HPV16_plot_seroprev,
