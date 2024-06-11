@@ -4,7 +4,7 @@
 run_and_save_models <- function(dat, survey_name) {
   
   dat0 <- dat %>% filter(
-    survey = survey_name) %>% 
+    survey == survey_name) %>% 
     select(survey, tsur, age_min, age_max, counts, total) %>%
     rename(n_seropositive = counts,
            sample_size = total)
@@ -104,7 +104,7 @@ run_and_save_models <- function(dat, survey_name) {
   
   list_outputs <- list(dat0= dat0, 
                        survey_name = survey_name,
-                       model1 = constant_no_seroreversion,
+                       model1 = time_constant_no_seroreversion,
                        model2 = time_varying_no_seroreversion,
                        model3 = age_no_seroreversion,
                        model4 = age_seroreversion,
