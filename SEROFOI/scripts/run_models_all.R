@@ -19,6 +19,19 @@ surveys_of_interest <- c("CRI-009-01", "CRI-009-02", "COL-024-02",
 dat %>% filter(survey %in% surveys_of_interest)
 
 run_and_save_models(dat, survey_name = "COL-024-02")
+run_and_save_models(dat, survey_name = "COL-024-03")
+run_and_save_models(dat, survey_name = "COL-024-04")
+run_and_save_models(dat, survey_name = "CRI-009-01")
+run_and_save_models(dat, survey_name = "CRI-009-02")
+run_and_save_models(dat, survey_name = "BRA-017-01")
+run_and_save_models(dat, survey_name = "PRI-001-02")
+run_and_save_models(dat, survey_name = "USA-011-03")
+run_and_save_models(dat, survey_name = "USA-026-04")
+run_and_save_models(dat, survey_name = "USA-026-03")
+run_and_save_models(dat, survey_name = "TWN-025-01")
+run_and_save_models(dat, survey_name = "NGA-002-01")
+
+
 
 
 
