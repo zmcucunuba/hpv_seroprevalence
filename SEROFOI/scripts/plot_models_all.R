@@ -1,4 +1,5 @@
 library(serofoi)
+library(ggplot2)
 
 source("SEROFOI/scripts/plot_foi_estimates_constant_model.R")
 
@@ -59,9 +60,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
     seromodel = res_models$model3,
     serosurvey = res_models$dat0,
     size_text = size_text,
-    foi_max = foi_max)  + ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) 
+    foi_max = foi_max)
   
   S4 <- 
     plot_seroprevalence_estimates(
@@ -78,9 +77,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
     seromodel = res_models$model4,
     serosurvey = res_models$dat0,
     size_text = size_text,
-    foi_max = foi_max_m4) + ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) 
+    foi_max = foi_max_m4 ) 
   
   #empty_plot <- ggplot() + theme_void()
 
@@ -93,7 +90,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
 
 
 COL_HPVHr <- readRDS ("SEROFOI/results_RDS/COL-024-02_.RDS")
-plot_COL_HPVHr <- fPlotAllModels(res_models = COL_HPV18, 
+plot_COL_HPVHr <- fPlotAllModels(res_models = COL_HPVHr, 
                                  foi_max = 0.6, foi_max_m4 = 0.6, size_text = 8)
 jpeg(filename = "SEROFOI/plots/COL_HPVHr.jpeg",width = 11, height = 8, units = "in", res = 300)
 plot_COL_HPVHr 
@@ -122,9 +119,30 @@ jpeg(filename = "SEROFOI/plots/CRI_HPV16.jpeg",width = 11, height = 8, units = "
 plot_CRI_HPV16
 dev.off()
 
-
 CRI_HPV18 <- readRDS ("SEROFOI/results_RDS/CRI-009-02_.RDS")
-plot_CRIL_HPV18 <- fPlotAllModels(res_models = COL_HPV18, 
-                                 fox_max = 0.1, foi_max_m4 = 1, size_text = 8)
+plot_CRI_HPV18 <- fPlotAllModels(res_models = CRI_HPV18, 
+                                 foi_max = 0.3 , foi_max_m4 = 0.75, size_text = 8)
 jpeg(filename = "SEROFOI/plots/CRI_HPV18.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_CRI_HPV18
+dev.off()
+
+BRA_HPV16 <- readRDS ("SEROFOI/results_RDS/BRA-017-01_.RDS")
+plot_BRA_HPV16 <- fPlotAllModels(res_models = BRA_HPV16, 
+                                 foi_max = 1.2 , foi_max_m4 = 1.2 , size_text = 8)
+jpeg(filename = "SEROFOI/plots/BRA_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_BRA_HPV16
+dev.off()
+
+PRI_HPVHr <- readRDS ("SEROFOI/results_RDS/PRI-001-02_.RDS")
+plot_PRI_HPVHr <- fPlotAllModels(res_models = PRI_HPVHr, 
+                                 foi_max = 1.2 , foi_max_m4 = 1.2 , size_text = 8)
+jpeg(filename = "SEROFOI/plots/PRI_HPVHr.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_BRA_HPV16
+dev.off()
+
+
+
+
+
+
 
