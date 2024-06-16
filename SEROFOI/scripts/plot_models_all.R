@@ -13,10 +13,10 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
       seromodel = res_models$model1,
       serosurvey = res_models$dat0,
       size_text = size_text) +
-      ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) +
-    ggtitle(paste0(survey, "\n M1-Constante sin serorevesión"))
+   # ggplot2::coord_cartesian(
+    #  xlim = c(0, 60)
+    #) +
+      ggtitle(paste0(survey, "\n M1-Constante sin serorevesión"))
   
    F1 <- 
      plot_foi_estimates_constant_model(
@@ -32,10 +32,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
       seromodel = res_models$model2,
       serosurvey = res_models$dat0,
       size_text = size_text) +
-    ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) +
-    ggtitle(paste0(survey, "\nM2-Tiempo sin seroreversión"))
+      ggtitle(paste0(survey, "\nM2-Tiempo sin seroreversión"))
   
   
   F2 <- plot_foi_estimates(
@@ -50,10 +47,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
       seromodel = res_models$model3,
       serosurvey = res_models$dat0,
       size_text = size_text) +
-    ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) +
-    ggtitle(paste0(survey, "\nM3-Edad sin seroreversión"))
+      ggtitle(paste0(survey, "\nM3-Edad sin seroreversión"))
   
   
   F3 <- plot_foi_estimates(
@@ -67,9 +61,9 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
       seromodel = res_models$model4,
       serosurvey = res_models$dat0,
       size_text = size_text) +
-    ggplot2::coord_cartesian(
-      xlim = c(0, 60)
-    ) +
+    #ggplot2::coord_cartesian(
+     # xlim = c(0, 60)
+    #) +
     ggtitle(paste0(survey, "\nM4-Edad con seroreversión"))
   
   
@@ -135,10 +129,51 @@ dev.off()
 
 PRI_HPVHr <- readRDS ("SEROFOI/results_RDS/PRI-001-02_.RDS")
 plot_PRI_HPVHr <- fPlotAllModels(res_models = PRI_HPVHr, 
-                                 foi_max = 1.2 , foi_max_m4 = 1.2 , size_text = 8)
+                                 foi_max = 1.0 , foi_max_m4 = 1.2 , size_text = 8)
 jpeg(filename = "SEROFOI/plots/PRI_HPVHr.jpeg",width = 11, height = 8, units = "in", res = 300)
-plot_BRA_HPV16
+plot_PRI_HPVHr
 dev.off()
+
+
+USA92_HPV16<- readRDS ("SEROFOI/results_RDS/USA-011-03_.RDS")
+plot_USA92_HPV16 <- fPlotAllModels(res_models = USA92_HPV16,  
+                                   foi_max = 0.05 , foi_max_m4 =0.05, size_text = 8)
+jpeg(filename = "SEROFOI/plots/USA92_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_USA92_HPV16 
+dev.off()
+
+USA_HPV16<- readRDS ("SEROFOI/results_RDS/USA-026-03_.RDS")
+plot_USA_HPV16 <- fPlotAllModels(res_models = USA_HPV16,  
+                                 foi_max = 0.04 , foi_max_m4 =0.3, size_text = 8)
+jpeg(filename = "SEROFOI/plots/USA_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_USA_HPV16
+dev.off()
+
+
+USA_HPV18<- readRDS ("SEROFOI/results_RDS/USA-026-04_.RDS")
+plot_USA_HPV18 <- fPlotAllModels(res_models = USA_HPV18,  
+                                 foi_max = 0.01, foi_max_m4 =0.2, size_text = 8)
+jpeg(filename = "SEROFOI/plots/USA_HPV18.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_USA_HPV18
+dev.off()
+
+
+TWN_HPV16<- readRDS ("SEROFOI/results_RDS/TWN-025-01_.RDS")
+plot_TWN_HPV16 <- fPlotAllModels(res_models = TWN_HPV16,  
+                                 foi_max = 0.03, foi_max_m4 =0.03, size_text = 8)
+jpeg(filename = "SEROFOI/plots/TWN_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_TWN_HPV16
+dev.off()
+
+
+NGA_HPV16<- readRDS ("SEROFOI/results_RDS/NGA-002-01_.RDS")
+plot_NGA_HPV16 <- fPlotAllModels(res_models = NGA_HPV16,  
+                                 foi_max = 1, foi_max_m4 =1.5, size_text = 8)
+jpeg(filename = "SEROFOI/plots/NGA_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
+plot_NGA_HPV16
+dev.off()
+
+
 
 
 
