@@ -1,7 +1,7 @@
 
 
 
-run_and_save_models <- function(dat, survey_name) {
+run_and_save_models <- function(dat, survey_name, output_excel_file = "summary_models.xlsx"){
   
   dat0 <- dat %>% filter(
     survey == survey_name) %>% 
@@ -14,15 +14,15 @@ run_and_save_models <- function(dat, survey_name) {
   time_constant_no_seroreversion <- fit_seromodel(
     serosurvey = dat0,
     model_type = "constant",
-    foi_prior = sf_uniform(),
-    is_seroreversion = TRUE,
-    seroreversion_prior = sf_uniform(0.0, 2.0)
-  )
+    foi_prior = sf_uniform()
+     )
   
   model1_summary <- summarise_seromodel(
     seromodel = time_constant_no_seroreversion,
     serosurvey = dat0 ) %>% as.data.frame()
-  
+   model1_summary$model <- "model1" 
+   
+
   # -------------------- Modelo 2.
   
   foi_index <- get_foi_index(
@@ -38,13 +38,15 @@ run_and_save_models <- function(dat, survey_name) {
     foi_prior = sf_normal(),
     is_seroreversion = FALSE,
     init = init,
-    iter = 5000,
+    iter = 5500,
     thin = 2
   )
   
   model2_summary <- summarise_seromodel(
     seromodel = time_varying_no_seroreversion,
     serosurvey = dat0 ) %>% as.data.frame()
+  model2_summary$model <- "model2"
+  
   
   
   #   --------------------  Modelo 3
@@ -71,6 +73,7 @@ run_and_save_models <- function(dat, survey_name) {
   model3_summary <- summarise_seromodel(
     seromodel = age_no_seroreversion,
     serosurvey = dat0 ) %>% as.data.frame()
+  model3_summary$model <- "model3"
   
   
   # #   --------------------  Modelo 4
@@ -98,7 +101,20 @@ run_and_save_models <- function(dat, survey_name) {
   model4_summary <- summarise_seromodel(
     seromodel = age_seroreversion,
     serosurvey = dat0 ) %>% as.data.frame()
+  model4_summary$model <- "model4"
   
+  
+  # combinar resumen de data frame
+  
+  df_summary <- dplyr::bind_rows(
+    model1_summary,
+    model2_summary,
+    model3_summary,
+    model4_summary
+  )
+  
+
+  write.xlsx(df_summary, output_excel_file)
   
 
   
@@ -117,6 +133,12 @@ run_and_save_models <- function(dat, survey_name) {
   
   name_file <- paste0("SEROFOI/results_RDS/", survey_name, "_", name_pathogen,".RDS")
   saveRDS(list_outputs, name_file)
+  
+  write.xlsx(df_summary, paste0("SEROFOI/summary_models/", survey_name, "_dat0.xlsx"))
+  
+  print(paste("SEROFOI/summary_models/", output_excel_file))
+  
+
   
   print(paste("finished____",  name_file))
   
