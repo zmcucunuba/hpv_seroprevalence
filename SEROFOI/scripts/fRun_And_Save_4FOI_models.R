@@ -52,8 +52,8 @@ run_and_save_models <- function(dat, survey_name, output_excel_file = "summary_m
   #   --------------------  Modelo 3
   
   foi_index <- c(
-    rep(1, 15),
-    16:max(dat0$age_max)
+    rep(1, 14),
+    15:max(dat0$age_max)
   )
   init <- function() {
     list(foi_vector = rep(0.01, max(foi_index)))
@@ -79,8 +79,8 @@ run_and_save_models <- function(dat, survey_name, output_excel_file = "summary_m
   # #   --------------------  Modelo 4
   
   foi_index <- c(
-    rep(1, 15),
-    16:max(dat0$age_max)
+    rep(1, 14),
+    15:max(dat0$age_max)
   )
   
   init <- function() {
