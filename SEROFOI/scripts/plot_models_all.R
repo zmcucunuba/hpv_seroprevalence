@@ -18,7 +18,8 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
     ggplot2::coord_cartesian(xlim = c(0, 60)) +
     ggplot2::xlab("Edad") +
     ggplot2::ylab("Seroprevalencia") +
-    ggplot2::ggtitle(paste0(survey, "\nM1-Constante sin seroreversión"))
+    ggplot2::ggtitle(paste0(survey, "\nM1-Dependiente de tiempo
+    (constante)"))
   
    
   
@@ -44,7 +45,8 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
      ) +
     ggplot2::xlab("Edad") +
     ggplot2::ylab("Seroprevalencia") +
-    ggplot2::ggtitle(paste0(survey, "\nM2-Tiempo sin seroreversión"))
+    ggplot2::ggtitle(paste0(survey, "\nM2-Dependiente de tiempo 
+    (variante)"))
   
   
   F2 <- plot_foi_estimates(
@@ -69,7 +71,7 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
     ) +
     ggplot2::xlab("Edad") +
     ggplot2::ylab("Seroprevalencia") +
-    ggplot2::ggtitle(paste0(survey, "\nM3-Edad sin seroreversión"))
+    ggplot2::ggtitle(paste0(survey, "\nM3-Dependiente de edad "))
   
   F3 <- plot_foi_estimates(
     seromodel = res_models$model3,
@@ -90,7 +92,8 @@ fPlotAllModels <- function(res_models, foi_max, foi_max_m4, size_text)
     ) +
     ggplot2::xlab("Edad") +
     ggplot2::ylab("Seroprevalencia") +
-    ggplot2::ggtitle(paste0(survey, "\nM4-Edad con seroreversión"))
+    ggplot2::ggtitle(paste0(survey, "\nM4-Dependiente de edad 
+    con serorreversión"))
   
   F4 <- plot_foi_estimates(
     seromodel = res_models$model4,
@@ -199,7 +202,7 @@ dev.off()
 
 NGA_HPV16<- readRDS ("SEROFOI/results_RDS/NGA-002-01_.RDS")
 plot_NGA_HPV16 <- fPlotAllModels(res_models = NGA_HPV16,  
-                                 foi_max = 0.070, foi_max_m4 =2.0, size_text = 10)
+                                 foi_max = 0.070, foi_max_m4 =3, size_text = 10)
 jpeg(filename = "SEROFOI/plots/NGA_HPV16.jpeg",width = 11, height = 8, units = "in", res = 300)
 plot_NGA_HPV16
 dev.off()
